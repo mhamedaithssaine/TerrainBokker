@@ -2,38 +2,32 @@
 @section('title', 'Mot de passe oublié')
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Mot de passe oublié ?
-            </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Entrez votre adresse e-mail pour réinitialiser votre mot de passe.
-            </p>
+    <div class="max-w-md w-full bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h2 class="text-center text-3xl font-bold text-gray-900">Réinitialiser le mot de passe</h2>
+            <p class="mt-2 text-center text-sm text-gray-600">Entrez votre adresse e-mail pour recevoir un lien de réinitialisation du mot de passe.</p>
         </div>
-        <form class="mt-8 space-y-6"  method="POST">
+        <form class="p-6 space-y-4" action="{{ route('') }}" method="POST">
             @csrf
-            <div class="rounded-md shadow-sm -space-y-px">
-                <!-- Email -->
-                <div>
-                    <label for="email" class="sr-only">Email</label>
-                    <input id="email" name="email" type="email" required 
-                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                        placeholder="Adresse email">
-                </div>
-            </div>
+            <input type="hidden" name="token" value="{{ $token }}">
 
             <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input id="email" name="email" type="email" required 
+                    class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm" 
+                    placeholder="Votre adresse email">
+            </div>
+            <div>
                 <button type="submit" 
-                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    class="w-full py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                     Envoyer le lien de réinitialisation
                 </button>
             </div>
         </form>
-        <div class="text-center">
-            <p class="mt-2 text-sm text-gray-600">
-                Vous vous souvenez de votre mot de passe ? 
-                <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+        <div class="text-center pt-4 border-t border-gray-200">
+            <p class="text-sm text-gray-600">
+                Déjà un compte ?
+                <a href="{{ route('login') }}" class="font-medium text-green-600 hover:text-green-500">
                     Connectez-vous
                 </a>
             </p>
