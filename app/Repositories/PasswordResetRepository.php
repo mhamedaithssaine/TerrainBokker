@@ -13,7 +13,7 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
     {
         $token = Str::random(60);
         
-        DB::table('password_resets')->updateOrInsert(
+        DB::table('password_reset_tokens')->updateOrInsert(
             ['email' => $email],
             [
                 'email' => $email,
@@ -27,11 +27,15 @@ class PasswordResetRepository implements PasswordResetRepositoryInterface
 
     public function findByToken($token)
     {
-        return DB::table('password_resets')->where('token', $token)->first();
+        return DB::table('password_reset_tokens')->where('token', $token)->first();
     }
 
     public function deleteToken($token)
     {
-        return DB::table('password_resets')->where('token', $token)->delete();
+        return DB::table('password_reset_tokens')->where('token', $token)->delete();
+    }
+
+    public function deleteExisting($email){
+          return DB::table('password_reset_tokens')->where('email',$email)->delete();
     }
 }

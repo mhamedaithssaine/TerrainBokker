@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\PasswordResetRepositoryInterface;
-use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ResetPasswordMail;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Interfaces\UserRepositoryInterface;
+use Illuminate\Validation\ValidationException;
+use App\Interfaces\PasswordResetRepositoryInterface;
 
 class ForgotPasswordController extends Controller
 {
@@ -40,18 +42,31 @@ class ForgotPasswordController extends Controller
             'email' => 'required|email',
         ]);
 
-        $user = $this->userRepository->getUserByEmail($request->email);
-
-        if (!$user) {
-            return back()->withErrors(['email' => 'Nous ne trouvons pas d\'utilisateur avec cette adresse e-mail.']);
-        }
-
-        $token = $this->passwordResetRepository->createToken($request->email);
-
-        // Envoyer l'e-mail
-        Mail::to($request->email)->send(new ResetPasswordMail($token));
-
-        return back()->with('status', 'Nous avons envoyé votre lien de réinitialisation par e-mail!');
-    }
+        try {
+            $user = $this->userRepository->getUserByEmail($request->email);
     
+            if (!$user) {
+                return back()->withErrors(['email' => 'Nous ne trouvons pas d\'utilisateur avec cette adresse e-mail.']);
+            }
+    
+            $token = $this->passwordResetRepository->createToken($request->email);
+    
+            Log::info('Tentative d\'envoi d\'email de réinitialisation', [
+                'email' => $request->email,
+                'token' => $token
+            ]);
+    
+            Mail::send('emails.reset-password', ['token' => $token, 'email' => $request->email], function($message) use ($request) {
+                $message->to($request->email);
+                $message->subject('Réinitialisation de mot de passe');
+            });
+    
+            return back()->with('status', 'Nous avons envoyé votre lien de réinitialisation par e-mail!');
+        } catch (\Exception $e) {
+            Log::error('Erreur d\'envoi d\'email: ' . $e->getMessage());
+            return back()->withErrors(['email' => 'Une erreur est survenue lors de l\'envoi de l\'e-mail. Veuillez vérifier vos paramètres SMTP.']);
+        }
+    }
 }
+    
+

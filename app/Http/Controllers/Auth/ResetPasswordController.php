@@ -11,13 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ResetPasswordController extends Controller
 {
+    
     private UserRepositoryInterface $userRepository;
     private PasswordResetRepositoryInterface $passwordResetRepository;
 
-    public function __construct(
-        UserRepositoryInterface $userRepository,
-        PasswordResetRepositoryInterface $passwordResetRepository
-    ) {
+    public function __construct(UserRepositoryInterface $userRepository,PasswordResetRepositoryInterface $passwordResetRepository) {
         $this->userRepository = $userRepository;
         $this->passwordResetRepository = $passwordResetRepository;
       
@@ -28,7 +26,12 @@ class ResetPasswordController extends Controller
      */
     public function showResetForm(Request $request, $token = null)
     {
-        return view('auth.reset-password', ['token' => $token, 'email' => $request->email]);
+
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => $request->email, 
+        ]);
+        
     }
 
     /**
@@ -37,31 +40,32 @@ class ResetPasswordController extends Controller
     public function reset(Request $request)
     {
         $request->validate([
-            'token' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'email' => 'required|email|exists:users',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required',
+            'token' => 'required'
         ]);
 
         $passwordReset = $this->passwordResetRepository->findByToken($request->token);
 
         if (!$passwordReset || $passwordReset->email !== $request->email) {
-            return back()->withErrors(['email' => 'Ce jeton de réinitialisation est invalide.']);
+            return back()->withInput()->with('error', 'Invalid token!');
         }
 
         $user = $this->userRepository->getUserByEmail($request->email);
-        
+
         if (!$user) {
             return back()->withErrors(['email' => 'Nous ne trouvons pas d\'utilisateur avec cette adresse e-mail.']);
         }
 
         $this->userRepository->updateUser($user->id, [
+           
             'password' => $request->password
         ]);
+      
 
         $this->passwordResetRepository->deleteToken($request->token);
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard')->with('status', 'Votre mot de passe a été réinitialisé!');
+        return redirect('/login')->with('message', 'Your password has been changed!');
     }
 }

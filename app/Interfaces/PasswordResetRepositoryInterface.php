@@ -7,4 +7,5 @@ interface PasswordResetRepositoryInterface
     public function createToken($email);
     public function findByToken($token);
     public function deleteToken($token);
+    public function deleteExisting($email);
 }
