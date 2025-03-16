@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('terrain_id'); 
+            $table->unsignedBigInteger('sportive_id'); 
+            $table->dateTime('date_debut'); 
+            $table->dateTime('date_fin'); 
+            $table->enum('statut', ['confirmée', 'en_attente', 'annulée'])->default('en_attente');
+            $table->foreign('terrain_id')->references('id')->on('terrains')->onDelete('cascade');
+            $table->foreign('sportive_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
