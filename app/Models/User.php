@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -45,4 +47,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
+    }
+    // Vérifie si l'utilisateur a un rôle spécifique
+    public function hasRole($role)
+    {
+        return $this->roles->contains('name', $role);
+    }
+
+     // Vérifie si l'utilisateur a une permission spécifique
+     public function hasPermission($permission)
+     {
+         foreach ($this->roles as $role) {
+             if ($role->permissions->contains('name', $permission)) {
+                 return true;
+             }
+         }
+         return false;
+     }
 }
