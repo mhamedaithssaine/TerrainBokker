@@ -51,7 +51,7 @@
                             @csrf
                             <button type="submit" class="flex items-center w-full text-left">
                                 <i class="fas fa-sign-out-alt mr-2 text-red-500"></i>
-                                <span class="text-red-500">Déconnexion</span>
+                                <span class="text-red-500">Logout</span>
                             </button>
                         </form>
                     </div>

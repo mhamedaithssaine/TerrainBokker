@@ -11,6 +11,14 @@
             </div>
         </a>
 
+        <!-- Categories-->
+        <a href="{{ route('categories.index') }}" class="block px-4 py-2 {{ request()->routeIs('categories.index') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
+            <div class="flex items-center">
+                <i class="fa-duotone fa-solid fa-layer-group mr-3"></i>
+                <span>Categories</span>
+            </div>
+        </a>
+        
         <!-- Disponibilités -->
         <a href="{{ route('dashboard.availabilities') }}" class="block px-4 py-2 {{ request()->routeIs('dashboard.availabilities') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
             <div class="flex items-center">
