@@ -10,7 +10,6 @@
 
     <p>Cliquez sur le lien ci-dessous pour réinitialiser votre mot de passe :</p>
     
-    <!-- Ajoutez l'email dans l'URL -->
     <a href="{{ url('/reset-password/' . $token . '?email=' . $email) }}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
         Réinitialiser mon mot de passe
     </a>
