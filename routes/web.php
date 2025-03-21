@@ -50,7 +50,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/dashboard/availabilities', [DashboardController::class, 'availabilities'])->name('dashboard.availabilities');
 Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
 Route::get('/dashboard/terrains/create', [DashboardController::class, 'createTerrain'])->name('dashboard.terrains.create');
-Route::get('/dashboard/terrains', [DashboardController::class, 'terrains'])->name('dashboard.terrains');
+Route::get('/dashboard/terrains', [DashboardController::class, 'terrains'])->name('dashboard.terrains.index');
 Route::get('/dashboard/payments', [DashboardController::class, 'payments'])->name('dashboard.payments');
 Route::get('/dashboard/reviews', [DashboardController::class, 'reviews'])->name('dashboard.reviews');
 Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');

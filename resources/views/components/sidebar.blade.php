@@ -18,6 +18,13 @@
                 <span>Categories</span>
             </div>
         </a>
+        <!--sponsors-->
+        <a href="{{ route('sponsors.index') }}" class="block px-4 py-2 {{ request()->routeIs('sponsors.index','sponsors.create','sponsors.edit') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
+            <div class="flex items-center">
+                <i class="fa-duotone fa-solid fa-layer-group mr-3"></i>
+                <span>Mes Sponsors</span>
+            </div>
+        </a>
         
         <!-- Disponibilités -->
         <a href="{{ route('dashboard.availabilities') }}" class="block px-4 py-2 {{ request()->routeIs('dashboard.availabilities') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
@@ -36,7 +43,7 @@
         </a>
 
         <!-- Mes terrains -->
-        <a href="{{ route('dashboard.terrains') }}" class="block px-4 py-2 {{ request()->routeIs('dashboard.terrains') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
+        <a href="{{ route('dashboard.terrains.index') }}" class="block px-4 py-2 {{ request()->routeIs('dashboard.terrains.index','dashboard.terrains.create') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
             <div class="flex items-center">
                 <i class="fas fa-futbol mr-3"></i>
                 <span>Mes terrains</span>
