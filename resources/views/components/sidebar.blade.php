@@ -21,7 +21,7 @@
         <!--sponsors-->
         <a href="{{ route('sponsors.index') }}" class="block px-4 py-2 {{ request()->routeIs('sponsors.index','sponsors.create','sponsors.edit') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
             <div class="flex items-center">
-                <i class="fa-duotone fa-solid fa-layer-group mr-3"></i>
+                <i class="fa-solid fa-list mr-3"></i>
                 <span>Mes Sponsors</span>
             </div>
         </a>
