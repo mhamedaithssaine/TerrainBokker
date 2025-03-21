@@ -128,7 +128,7 @@ class DashboardController extends Controller
     ];
 
     // Passer les terrains à la vue
-    return view('dashboard.terrains', compact('terrains'));
+    return view('dashboard.terrains.index', compact('terrains'));
 }
 
     /**
