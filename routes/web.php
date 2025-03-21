@@ -3,12 +3,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SponsorController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\CategoryController;
 
 // Routes d'authentification
 
@@ -43,6 +44,7 @@ Route::prefix('categories')->name('categories.')->group(function () {
 });
 
 //Routes sponsor 
+Route::resource('sponsors', SponsorController::class);
 
 
 
