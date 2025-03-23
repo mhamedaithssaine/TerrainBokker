@@ -25,6 +25,13 @@
                 <span>Mes Sponsors</span>
             </div>
         </a>
+        <!--roles-->
+        <a href="{{ route('roles.index') }}" class="block px-4 py-2 {{ request()->routeIs('roles.index','roles.create','roles.edit','roles.show') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
+            <div class="flex items-center">
+                <i class="fa-solid fa-list mr-3"></i>
+                <span>Manage Role</span>
+            </div>
+        </a>
         
         <!-- Disponibilités -->
         <a href="{{ route('dashboard.availabilities') }}" class="block px-4 py-2 {{ request()->routeIs('dashboard.availabilities') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
