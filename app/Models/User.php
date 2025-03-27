@@ -52,6 +52,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+    
     // Vérifie si l'utilisateur a un rôle spécifique
     public function hasRole($role)
     {
