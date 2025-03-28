@@ -1,6 +1,6 @@
 <nav class="bg-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
+    <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-evenly h-16 items-center">
             <!-- Logo et nom de l'application -->
             <div class="flex items-center">
                 <div class="flex-shrink-0 flex items-center">
@@ -10,7 +10,7 @@
             </div>
 
             <!-- Champ de recherche -->
-            <div class="flex-1 mx-8">
+            <div class="flex-1 mx-14">
                 <form action="" method="GET" class="w-full max-w-md">
                     <div class="relative">
                         <input type="text" name="query" placeholder="Rechercher..." 

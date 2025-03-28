@@ -8,6 +8,7 @@ use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -75,3 +76,7 @@ Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show')
 
 //roles 
 Route::resource('roles', RoleController::class);
+
+
+//permissions 
+Route::resource('permissions',PermissionController::class);

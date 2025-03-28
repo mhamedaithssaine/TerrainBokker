@@ -8,11 +8,6 @@
             <i class="fas fa-plus mr-2"></i>
            Rôle
         </a>
-        <a href="{{ route('roles.create') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-            <i class="fas fa-plus mr-2"></i>
-           Permissions
-        </a>
-        <div class="p-4">
         @if (session('success'))
             <div class="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
                 <p class="font-bold">Informational message</p>
