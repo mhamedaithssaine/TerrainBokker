@@ -17,7 +17,9 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index()
+
     {
+
         $users = User::with('roles')->paginate(6);
         return view('users.index',compact('users'));
     }
@@ -124,4 +126,23 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'Utilisateur supprimer avec succes');
     }
+
+      /**
+     * Update role resource from storage.
+     */
+
+    public function updateRole(Request $request, User $user)
+{
+    $request->validate([
+        'role' => 'required|exists:roles,name'
+    ]);
+    
+    
+    $user->roles()->detach();
+    $role = Role::where('name', $request->role)->first();
+    $user->roles()->attach($role);
+
+    
+    return back()->with('success', 'Role mis à jour avec succes');
+}
 }

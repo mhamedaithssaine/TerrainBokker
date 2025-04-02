@@ -85,3 +85,7 @@ Route::resource('permissions',PermissionController::class);
 
 //users 
 Route::resource('users',UserController::class);
+
+//update de role
+Route::put('/users/{user}/update-role', [UserController::class, 'updateRole'])
+    ->name('users.update-role');
