@@ -53,19 +53,14 @@
                                             @endforeach
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('users.show', $user->id) }}" class="text-blue-600 hover:text-blue-900 mr-2">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('users.edit', $user->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    
+                                    <a href="{{ route('users.show', $user->id) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-yellow-600 hover:text-yellow-800 bg-white border border-yellow-300 rounded-md hover:bg-yellow-50 transition duration-150 ease-in-out">Voir</a>
+
+                                    <a href="{{ route('users.edit', $user->id) }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-800 bg-white border border-blue-300 rounded-md hover:bg-blue-50 transition duration-150 ease-in-out">Modifier</a>
+                            
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-red-600 hover:text-red-800 bg-white border border-red-300 rounded-md hover:bg-red-50 transition duration-150 ease-in-out">Supprimer</button>
                                     </form>
                                 </td>
                             </tr>

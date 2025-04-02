@@ -9,6 +9,7 @@ use App\Mail\WelcomeUserMail;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
@@ -61,32 +62,66 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('users.show',compact('user','roles'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('users.edit',compact('user','roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        $validatedData = $request->validated();
+    
+        if (is_null($validatedData['password'])) {
+            unset($validatedData['password']);
+        } else {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+        
+        $user->update($validatedData);
+        
+
+    
+    if ($request->hasFile('profile_photo')) {
+
+        $path = $request->file('profile_photo')->store('profile_photos', 'public');
+        $user->profile_photo = $path;
+        $user->save();
+
+    }
+   
+
+    if ($request->has('role')) {
+        $user->roles()->detach();
+        
+        $role = Role::where('name', $request->input('role'))->first();
+        if ($role) {
+            $user->roles()->attach($role->id);
+        }
+    }
+
+
+    return redirect()->route('users.index')->with('success', 'Utilisateur mis à jour avec succès.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'Utilisateur supprimer avec succes');
     }
 }
