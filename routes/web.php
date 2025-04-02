@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProfileController;
@@ -80,3 +81,7 @@ Route::resource('roles', RoleController::class);
 
 //permissions 
 Route::resource('permissions',PermissionController::class);
+
+
+//users 
+Route::resource('users',UserController::class);
