@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
@@ -89,3 +90,6 @@ Route::resource('users',UserController::class);
 //update de role
 Route::put('/users/{user}/update-role', [UserController::class, 'updateRole'])
     ->name('users.update-role');
+
+//home 
+Route::get('/', [HomeController::class,'index'])->name('home');

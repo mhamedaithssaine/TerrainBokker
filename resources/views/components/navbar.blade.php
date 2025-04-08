@@ -34,7 +34,11 @@
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center focus:outline-none">
                         <img class="h-8 w-8 rounded-full object-cover" src="/api/placeholder/150/150" alt="Photo de profil">
-                        <span class="ml-2 text-gray-700">{{ Auth::user()->name }}</span>
+                        @if (session('name'))
+                        <span class="ml-2 text-gray-700">{{ session('name') }}</span>
+                    @else
+                        <span class="ml-2 text-gray-500 italic">Invité</span>
+                    @endif
                         <i class="fas fa-chevron-down ml-2 text-xs text-gray-600"></i>
                     </button>
 
