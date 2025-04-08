@@ -45,7 +45,7 @@ class LoginController extends Controller
             $request->session()->put('user_id', $user->id); 
             $request->session()->put('name', $user->name);   
     
-            if ($user->hasRole('admin')) {
+            if ($user->hasRole('admin'||'organisateur')) {
                 return redirect()->route('dashboard.index'); 
             } elseif ($user->hasRole('sportive')) {
                 return redirect()->route('home');  
