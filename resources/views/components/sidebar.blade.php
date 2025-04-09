@@ -53,7 +53,7 @@
             </div>
         </a>
 
-        <a href="{{ route('dashboard.terrains.index') }}" class="block px-4 py-2 {{ request()->routeIs('dashboard.terrains.index','dashboard.terrains.create') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
+        <a href="{{ route('terrains.index') }}" class="block px-4 py-2 {{ request()->routeIs('terrains.index','terrains.create') ? 'bg-emerald-100 text-emerald-700 border-l-4 border-emerald-600' : 'text-gray-700 hover:bg-gray-100' }}">
             <div class="flex items-center">
                 <i class="fas fa-futbol mr-3"></i>
                 <span>Terrains</span>

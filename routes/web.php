@@ -1,12 +1,13 @@
 <?php
 
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SponsorController;
+use App\Http\Controllers\TerrainController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
@@ -57,13 +58,13 @@ Route::put('/sponsors/{sponsor}', [SponsorController::class, 'update'])->name('s
 Route::delete('/sponsors/{sponsor}', [SponsorController::class, 'destroy'])->name('sponsors.destroy');
 
 
+//routes terrain
+Route::resource('terrains',TerrainController::class);
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/dashboard/availabilities', [DashboardController::class, 'availabilities'])->name('dashboard.availabilities');
 Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
-Route::get('/dashboard/terrains/create', [DashboardController::class, 'createTerrain'])->name('dashboard.terrains.create');
-Route::get('/dashboard/terrains', [DashboardController::class, 'terrains'])->name('dashboard.terrains.index');
 Route::get('/dashboard/payments', [DashboardController::class, 'payments'])->name('dashboard.payments');
 Route::get('/dashboard/reviews', [DashboardController::class, 'reviews'])->name('dashboard.reviews');
 Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
