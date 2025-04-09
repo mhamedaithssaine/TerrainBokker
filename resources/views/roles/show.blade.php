@@ -1,26 +1,26 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="">
-        <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-6">Détails du Rôle</h1>
-            <a href="{{ route('roles.index') }}"
-               class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                <i class="ri-arrow-left-line mr-2"></i>
-                Retour
-            </a>
-        </div>
+    
+<h1 class="text-2xl font-semibold text-gray-800 mb-6">Détails de Rôle</h1>
+
 
         <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-800">Informations role</h2>
+                <a href="{{ route('roles.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    
+                </a>
+            </div>
             <div class="space-y-8">
-                <!-- Nom du rôle -->
+                <div class="p-6">
                 <div>
                     <label class="block text-sm font-medium text-gray-600 mb-2">Nom du Rôle</label>
                     <p class="text-xl font-semibold text-gray-800">{{ $role->name }}</p>
                 </div>
 
-                <!-- Permissions -->
-                <div>
+                <div class="mt-2">
                     <label class="block text-sm font-medium text-gray-600 mb-3">Permissions</label>
                     <div class="flex flex-wrap gap-3">
                         @foreach ($role->permissions as $permission)
@@ -30,7 +30,7 @@
                         @endforeach
                     </div>
                 </div>
-
+            </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-600 mb-3">Utilisateurs avec ce Rôle</label>
                     <div class="overflow-x-auto rounded-lg shadow-sm">
@@ -58,5 +58,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 @endsection
