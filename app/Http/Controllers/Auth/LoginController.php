@@ -42,6 +42,7 @@ class LoginController extends Controller
 
 
         if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
             $request->session()->put('user_id', $user->id); 
             $request->session()->put('name', $user->name);   
     
@@ -65,8 +66,8 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $request->session()->forget(['user_id','name']);
+        $request->session()->regenerate();
         return redirect('/login');
     }
 }
