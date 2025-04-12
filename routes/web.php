@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TerrainController;
@@ -94,3 +95,7 @@ Route::put('/users/{user}/update-role', [UserController::class, 'updateRole'])
 
 //home 
 Route::get('/', [HomeController::class,'index'])->name('home');
+
+//contact 
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
