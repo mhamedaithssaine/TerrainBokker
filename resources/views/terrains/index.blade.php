@@ -8,7 +8,7 @@
             <h2 class="text-lg font-semibold text-gray-800">Liste des terrains</h2>
             <a href="{{ route('terrains.create') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
                 <i class="fas fa-plus mr-2"></i>
-                Ajouter un nouveau terrain
+                Créer un terrain
             </a>
         </div>
         <div class="p-4">
@@ -23,7 +23,7 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Catégorie</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prix</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sponsor</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Statut</th>
@@ -35,7 +35,7 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $terrain->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $terrain->categorie->name }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($terrain->prix, 2) }} €</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($terrain->prix, 2) }} DH</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $terrain->sponsor->name ?? 'Aucun' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($terrain->statut === 'disponible')
@@ -49,6 +49,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <a href="{{ route('terrains.show', $terrain->id) }}" class="text-yellow-600 hover:text-yellow-900 mr-2">Voir</a>
                                     <a href="{{ route('terrains.edit', $terrain->id) }}" class="text-indigo-600 hover:text-indigo-900 mr-2">Modifier</a>
                                     <form action="{{ route('terrains.destroy', $terrain->id) }}" method="POST" class="inline">
                                         @csrf
