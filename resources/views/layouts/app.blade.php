@@ -17,13 +17,6 @@
             @yield('content')
         </main>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const notificationBtn = document.querySelector('.fa-bell').parentElement;
-            notificationBtn.addEventListener('click', () => {
-                alert('Vous avez 3 nouvelles notifications');
-            });
-        });
-    </script>
+   @yield('scripts')
 </body>
 </html>
