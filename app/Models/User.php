@@ -62,7 +62,7 @@ class User extends Authenticatable
     // Vérifie si l'utilisateur a un rôle spécifique
     public function hasRole($role)
     {
-        return $this->roles->contains('name', $role);
+        return $this->roles->where('name', $role)->isNotEmpty();   
     }
 
      // Vérifie si l'utilisateur a une permission spécifique
