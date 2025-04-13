@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\UserRepositoryInterface;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Interfaces\UserRepositoryInterface;
 
 class RegisterController extends Controller
 {
@@ -37,11 +38,19 @@ class RegisterController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        $sportiveRole = Role::where('name', 'sportive')->first();
+
+
         $user = $this->userRepository->createUser([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
         ]);
+
+
+        if ($sportiveRole) {
+            $user->roles()->attach($sportiveRole);
+        }
 
         Auth::login($user);
 

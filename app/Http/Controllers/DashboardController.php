@@ -101,35 +101,7 @@ class DashboardController extends Controller
      * Affiche la liste des terrains.
      */
     // Exemple de données de terrains (à remplacer par une requête à la base de données)
-    public function terrains()
-    {
-    $terrains = [
-        [
-            'id' => 1,
-            'nom' => 'Terrain Football 5',
-            'type' => 'Football',
-            'capacite' => '10 joueurs',
-            'statut' => 'disponible', // disponible, en maintenance, réservé
-        ],
-        [
-            'id' => 2,
-            'nom' => 'Tennis Court 2',
-            'type' => 'Tennis',
-            'capacite' => '4 joueurs',
-            'statut' => 'disponible',
-        ],
-        [
-            'id' => 3,
-            'nom' => 'Basketball Court',
-            'type' => 'Basketball',
-            'capacite' => '10 joueurs',
-            'statut' => 'en maintenance',
-        ],
-    ];
-
-    // Passer les terrains à la vue
-    return view('dashboard.terrains', compact('terrains'));
-}
+ 
 
     /**
      * Affiche les paiements.
@@ -243,14 +215,7 @@ class DashboardController extends Controller
     }
 
 
-    
-    /**
-     * Affiche le formulaire d'ajout de terrain.
-     */
-    public function createTerrain()
-    {
-        return view('dashboard.terrains.create');
-    }
+ 
 
     /**
      * Enregistre un nouveau terrain.
