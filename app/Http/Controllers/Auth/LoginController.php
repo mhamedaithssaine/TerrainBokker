@@ -46,13 +46,10 @@ class LoginController extends Controller
             $request->session()->put('user_id', $user->id); 
             $request->session()->put('name', $user->name);   
     
-            if ($user->hasRole('admin'||'organisateur')) {
-                return redirect()->route('dashboard.index'); 
-            } elseif ($user->hasRole('sportive')) {
-                return redirect()->route('home');  
-            } else {
-                return redirect()->route('home');  
+            if ($user->hasRole('admin') || $user->hasRole('organisateur')) {
+                return redirect()->route('dashboard.index');
             }
+            return redirect()->route('home');
         }
     
         throw ValidationException::withMessages([
