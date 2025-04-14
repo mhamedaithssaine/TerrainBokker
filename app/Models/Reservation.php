@@ -18,6 +18,11 @@ class Reservation extends Model
     ];
 
 
+    protected $casts = [
+        'date_debut' => 'datetime',
+        'date_fin' => 'datetime',
+    ];
+
     public function terrain()
     {
         return $this->belongsTo(Terrain::class, 'terrain_id');

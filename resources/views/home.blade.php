@@ -3,6 +3,18 @@
 @section('title', 'Accueil')
 
 @section('content')
+@if (session('success'))
+<div class="alert alert-success mb-4 bg-emerald-100 text-emerald-800 border-emerald-300">
+    {{ session('success') }}
+</div>
+@endif
+
+@if (session('error'))
+<div class="alert alert-error mb-4 bg-red-100 text-red-800 border-red-300">
+    {{ session('error') }}
+</div>
+@endif
+
     <!-- Hero Section -->
     <section id="accueil" class="hero min-h-[70vh]" style="background-image: url('https://picsum.photos/id/1058/1920/1080');">
         <div class="hero-overlay bg-black bg-opacity-60"></div>
@@ -10,7 +22,11 @@
             <div class="max-w-md">
                 <h1 class="mb-5 text-5xl font-bold">TerrainBooker</h1>
                 <p class="mb-5">Réservez facilement votre terrain de sport en quelques clics.</p>
-                <button class="btn bg-primary text-white border-none hover:bg-secondary">Réserver maintenant</button>
+                @auth
+                    <a href="#terrains" class="btn bg-primary text-white border-none hover:bg-secondary">Réserver maintenant</a>
+                @else
+                    <a href="{{ route('login') }}" class="btn bg-primary text-white border-none hover:bg-secondary">Connectez-vous pour réserver</a>
+                @endauth
             </div>
         </div>
     </section>
@@ -20,108 +36,52 @@
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-8 text-secondary">Nos Terrains</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Terrain Card 1 -->
-                <div class="card bg-base-100 shadow-xl">
-                    <figure><img src="https://picsum.photos/id/1071/600/400" alt="Terrain de football" /></figure>
-                    <div class="card-body">
-                        <h3 class="card-title">Terrain de Football</h3>
-                        <p>Terrain synthétique de dernière génération.</p>
-                        <div class="card-actions justify-end">
-                            <button class="btn bg-primary text-white border-none hover:bg-secondary">Réserver</button>
+                @forelse ($terrains as $terrain)
+                    <div class="card bg-base-100 shadow-xl">
+                        <figure>
+                            <img src="{{ asset('storage/' . $terrain->photo) }}" width="100%" alt="{{ $terrain->name }}" />
+                        </figure>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ $terrain->name }}</h3>
+                            <p>{{ $terrain->description }}</p>
+                            <p><strong>Type :</strong> {{ $terrain->categorie->name }}</p>
+                            <p><strong>Prix :</strong> {{ $terrain->prix }} €/heure</p>
+                            <p><strong>Adresse :</strong> {{ $terrain->adresse }}</p>
+                            <!-- Afficher les créneaux réservés -->
+                            @auth
+                            @if (isset($reservations[$terrain->id]) && $reservations[$terrain->id]->isNotEmpty())
+                            <p><strong>Créneaux réservés :</strong></p>
+                            <ul class="list-disc pl-5">
+                                @foreach ($reservations[$terrain->id] as $reservation)
+                                    <li>{{ $reservation->date_debut->format('d/m/Y H:i') }} - {{ $reservation->date_fin->format('d/m/Y H:i') }}</li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p><strong>Disponibilité :</strong> Aucun créneau réservé pour le moment.</p>
+                        @endif
+                            @endauth
+                           
+                            <div class="card-actions justify-end">
+                                @auth
+                                    <a href="{{ route('reservations.create', $terrain->id) }}" class="btn bg-primary text-white border-none hover:bg-secondary">Réserver</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="btn bg-primary text-white border-none hover:bg-secondary">Connectez-vous pour réserver</a>
+                                @endauth
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Terrain Card 2 -->
-                <div class="card bg-base-100 shadow-xl">
-                    <figure><img src="https://picsum.photos/id/1072/600/400" alt="Terrain de tennis" /></figure>
-                    <div class="card-body">
-                        <h3 class="card-title">Court de Tennis</h3>
-                        <p>Court en terre battue entretenu quotidiennement.</p>
-                        <div class="card-actions justify-end">
-                            <button class="btn bg-primary text-white border-none hover:bg-secondary">Réserver</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Terrain Card 3 -->
-                <div class="card bg-base-100 shadow-xl">
-                    <figure><img src="https://picsum.photos/id/1057/600/400" alt="Terrain de basketball" /></figure>
-                    <div class="card-body">
-                        <h3 class="card-title">Terrain de Basketball</h3>
-                        <p>Terrain couvert avec sol en parquet professionnel.</p>
-                        <div class="card-actions justify-end">
-                            <button class="btn bg-primary text-white border-none hover:bg-secondary">Réserver</button>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                    <p class="text-center">Aucun terrain disponible pour le moment.</p>
+                @endforelse
+            </div>
+            <div class="mt-8 flex justify-center">
+                {{ $terrains->links() }}
             </div>
         </div>
     </section>
 
-    <!-- Booking Section -->
-    <section id="reserver" class="py-12">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8 text-secondary">Réservez Maintenant</h2>
-            <div class="card bg-base-100 shadow-xl max-w-2xl mx-auto border border-primary">
-                <div class="card-body">
-                    <form>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text">Type de terrain</span>
-                                </label>
-                                <select class="select select-bordered border-primary">
-                                    <option disabled selected>Choisissez un type</option>
-                                    <option>Football</option>
-                                    <option>Tennis</option>
-                                    <option>Basketball</option>
-                                </select>
-                            </div>
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text">Date</span>
-                                </label>
-                                <input type="date" class="input input-bordered border-primary" />
-                            </div>
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text">Heure</span>
-                                </label>
-                                <select class="select select-bordered border-primary">
-                                    <option disabled selected>Choisissez une heure</option>
-                                    <option>09:00</option>
-                                    <option>10:00</option>
-                                    <option>11:00</option>
-                                    <option>12:00</option>
-                                    <option>13:00</option>
-                                    <option>14:00</option>
-                                    <option>15:00</option>
-                                    <option>16:00</option>
-                                    <option>17:00</option>
-                                    <option>18:00</option>
-                                    <option>19:00</option>
-                                    <option>20:00</option>
-                                </select>
-                            </div>
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text">Durée</span>
-                                </label>
-                                <select class="select select-bordered border-primary">
-                                    <option disabled selected>Choisissez une durée</option>
-                                    <option>1 heure</option>
-                                    <option>2 heures</option>
-                                    <option>3 heures</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="card-actions justify-center mt-6">
-                            <button type="submit" class="btn bg-primary text-white border-none hover:bg-secondary">Vérifier la disponibilité</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <!-- Feedback Section -->
+    <section>
+        <!-- À remplir plus tard -->
     </section>
 @endsection
