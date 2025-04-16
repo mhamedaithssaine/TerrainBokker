@@ -17,7 +17,7 @@ class ReservationController extends Controller
 
     public function index(){
         $reservations = Reservation::where('sportive_id', Auth::id())
-            ->with('terrain.categorie')
+            ->with('terrain.categorie')->where('date_fin','>=',now())
             ->orderBy('date_debut', 'desc')
             ->get();
 
