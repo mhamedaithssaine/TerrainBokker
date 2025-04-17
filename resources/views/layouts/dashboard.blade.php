@@ -8,6 +8,21 @@
     @include('components.recent-bookings-table')
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         @include('components.calendar')
-        @include('components.reviews')
+        {{-- @include('components.feedbackrecents') --}}
+
+        <div id="feedback-recents">
+        </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('{{ route("components.feedbackrecents") }}')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('feedback-recents').innerHTML = data;
+                })
+                .catch(error => console.error('Erreur lors du chargement des feedbacks:', error));
+        });
+    </script>
 @endsection
