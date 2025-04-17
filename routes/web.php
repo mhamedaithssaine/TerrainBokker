@@ -10,10 +10,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TerrainController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -68,7 +70,6 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::get('/dashboard/availabilities', [DashboardController::class, 'availabilities'])->name('dashboard.availabilities');
 Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
 Route::get('/dashboard/payments', [DashboardController::class, 'payments'])->name('dashboard.payments');
-Route::get('/dashboard/reviews', [DashboardController::class, 'reviews'])->name('dashboard.reviews');
 Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
 Route::put('/dashboard/settings', [DashboardController::class, 'updateSettings'])->name('dashboard.settings.update');
 
@@ -109,3 +110,10 @@ Route::post('/reservations', [ReservationController::class, 'store'])->name('res
 Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
 
+// feedback 
+Route::middleware('auth')->post('/feedback', [HomeController::class, 'storeFeedback'])->name('feedback.store');
+
+Route::get('/dashboard/feedbacks', [FeedbackController::class, 'index'])->name('dashboard.feedback.index');
+Route::patch('dashboard/feedbacks/{feedback}', [FeedbackController::class, 'updateStatus'])->name('dashboard.feedback.update');
+
+Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index'])->name('components.feedbackrecents');
