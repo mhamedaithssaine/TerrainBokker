@@ -75,4 +75,10 @@ class User extends Authenticatable
          }
          return false;
      }
+
+
+     public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }
