@@ -118,15 +118,18 @@ class ReservationAdminController extends Controller
                 ->with('error', 'Ce terrain n\'est pas disponible pour le moment.');
         }
     
-        $client = User::find($client_id);
+        // $client = User::find($client_id);
+        $amount = $payment_advance * $duration;
     
         Reservation::create([
             'terrain_id' => $terrain_id,
             'sportive_id' => $client_id,
             'date_debut' => $date_debut->format('Y-m-d H:i:s'),
             'date_fin' => $date_fin->format('Y-m-d H:i:s'),
-            'payment_advance' => $payment_advance,
-            'statut' => 'reserve',
+            'payment_advance' => $amount,
+            'statut' => 'confirmée',
+            'payment_status' => 'payé',
+
         ]);
     
         return redirect()->route('dashboard.index')->with('success', 'Réservation effectuée avec succès.');
