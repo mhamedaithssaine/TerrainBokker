@@ -29,4 +29,9 @@ class Terrain extends Model
     {
         return $this->belongsTo(Sponsor::class, 'sponsor_id');
     }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }
