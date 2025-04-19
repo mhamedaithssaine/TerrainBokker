@@ -4,7 +4,11 @@
 
 @section('content')
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Tableau de bord gestionnaire</h1>
-    @include('components.stats-card')
+    {{-- @include('components.stats-card') --}}
+    <div id="statique-card">
+
+    </div>
+
     @include('components.recent-bookings-table')
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         @include('components.calendar')
@@ -24,5 +28,21 @@
                 })
                 .catch(error => console.error('Erreur lors du chargement des feedbacks:', error));
         });
+
+        //popur les statique-card
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('{{ route("components.stats-card") }}')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('statique-card').innerHTML = data;
+                })
+                .catch(error => console.error('Erreur lors du chargement des feedbacks:', error));
+        });
+
+
+        
+
+
+
     </script>
 @endsection
