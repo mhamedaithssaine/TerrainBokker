@@ -123,3 +123,6 @@ Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index']
 Route::get('/dashboard/createreservation', [ReservationAdminController::class, 'createreservation'])->name('dashboard.createreservation');
 Route::post('/dashboard/createreservation/store', [ReservationAdminController::class, 'store'])->name('dashboard.createreservation.store');
 Route::get('/dashboard/createreservation/terrain/{terrain_id}/reservations', [ReservationAdminController::class, 'getTerrainReservations'])->name('dashboard.createreservation.reservations');
+
+//routes statique 
+Route::get('/components/stats-card', [StatistiqueController::class, 'StatistiqueCard'])->name('components.stats-card');
