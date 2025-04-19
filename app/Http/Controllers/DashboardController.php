@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -60,42 +61,6 @@ class DashboardController extends Controller
         return view('dashboard.bookings', compact('bookings'));
     }
 
-    /**
-     * Affiche les disponibilités des terrains.
-     */
-    public function availabilities()
-    {
-        // Exemple de données de disponibilités (à remplacer par une requête à la base de données)
-        $availabilities = [
-            [
-                'id' => 1,
-                'terrain' => 'Terrain Football 5',
-                'date' => '2025-03-03',
-                'heure_debut' => '18:00',
-                'heure_fin' => '19:30',
-                'statut' => 'disponible', // disponible, réservé, partiellement réservé
-            ],
-            [
-                'id' => 2,
-                'terrain' => 'Tennis Court 2',
-                'date' => '2025-03-03',
-                'heure_debut' => '14:00',
-                'heure_fin' => '15:30',
-                'statut' => 'réservé',
-            ],
-            [
-                'id' => 3,
-                'terrain' => 'Basketball Court',
-                'date' => '2025-03-02',
-                'heure_debut' => '19:00',
-                'heure_fin' => '20:00',
-                'statut' => 'partiellement réservé',
-            ],
-        ];
-
-        // Passer les disponibilités à la vue
-        return view('dashboard.availabilities', compact('availabilities'));
-    }
 
     /**
      * Affiche la liste des terrains.
@@ -180,53 +145,5 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.settings')->with('success', 'Paramètres mis à jour avec succès !');
     }
 
-     /**
-     * Affiche la page des avis clients.
-     */
-    public function reviews()
-    {
-        // Récupérer les avis clients depuis la base de données (exemple)
-        $reviews = [
-            [
-                'id' => 1,
-                'user' => 'Lucas Girard',
-                'rating' => 5,
-                'comment' => 'Terrain en parfait état, vestiaires propres. Je recommande !',
-                'date' => '2025-03-01',
-            ],
-            [
-                'id' => 2,
-                'user' => 'Anne Moreau',
-                'rating' => 4,
-                'comment' => 'Bon terrain, éclairage un peu faible en soirée.',
-                'date' => '2025-02-28',
-            ],
-            [
-                'id' => 3,
-                'user' => 'Thomas Dubois',
-                'rating' => 4.5,
-                'comment' => 'Excellent service, réservation facile et personnel très accueillant !',
-                'date' => '2025-02-27',
-            ],
-        ];
-
-        // Passer les avis à la vue
-        return view('dashboard.reviews', compact('reviews'));
-    }
-
-
- 
-
-    /**
-     * Enregistre un nouveau terrain.
-     */
-    public function storeTerrain(Request $request)
-    {
-        // Validation des données du formulaire
-       
-
-        // Redirection avec un message de succès
-        return redirect()->route('dashboard.terrains')->with('success', 'Terrain ajouté avec succès !');
-    }
 }
 
