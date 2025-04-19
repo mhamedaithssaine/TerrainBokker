@@ -12,12 +12,11 @@ class Reservation extends Model
     protected $fillable = [
         'terrain_id',
         'sportive_id',
-        'client_id',
-        'client_name',
         'date_debut',
         'date_fin',
         'payment_advance',
         'statut',
+        'payment_status',
     ];
 
 
@@ -39,5 +38,10 @@ class Reservation extends Model
     public function client()
     {
         return $this->belongsTo(User::class, 'client_id');
+    }
+
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }
