@@ -109,6 +109,10 @@ Route::get('/reservations/create/{terrain_id}', [ReservationController::class, '
 Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
 Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+//payment 
+Route::get('/reservations/payment/success/{id}', [ReservationController::class, 'paymentSuccess'])->name('reservations.payment.success');
+Route::get('/reservations/payment/cancel/{id}', [ReservationController::class, 'paymentCancel'])->name('reservations.payment.cancel');
+
 
 // feedback 
 Route::middleware('auth')->post('/feedback', [HomeController::class, 'storeFeedback'])->name('feedback.store');
@@ -118,8 +122,10 @@ Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index']
 
 
 
-
 //reservation with admin 
 Route::get('/dashboard/createreservation', [ReservationAdminController::class, 'createreservation'])->name('dashboard.createreservation');
 Route::post('/dashboard/createreservation/store', [ReservationAdminController::class, 'store'])->name('dashboard.createreservation.store');
 Route::get('/dashboard/createreservation/terrain/{terrain_id}/reservations', [ReservationAdminController::class, 'getTerrainReservations'])->name('dashboard.createreservation.reservations');
+
+//routes statique 
+Route::get('/components/stats-card', [StatistiqueController::class, 'StatistiqueCard'])->name('components.stats-card');

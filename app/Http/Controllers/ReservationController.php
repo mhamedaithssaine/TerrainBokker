@@ -1,12 +1,14 @@
 <?php 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use Stripe\Stripe;
+use App\Models\Payment;
 use App\Models\Terrain;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-
+use Stripe\Checkout\Session;
 class ReservationController extends Controller
 {
 
@@ -28,7 +30,7 @@ class ReservationController extends Controller
     {
         $terrain = Terrain::with('categorie')->findOrFail($terrain_id);
         $reservations = Reservation::where('terrain_id', $terrain_id)
-            ->where('date_debut', '>=', Carbon::now())
+            ->where('date_debut', '>', Carbon::now())
             ->get(['id', 'sportive_id', 'date_debut', 'date_fin']);             
         return view('reservations.create', compact('terrain', 'reservations'));
     }
@@ -37,7 +39,7 @@ class ReservationController extends Controller
     {
     $request->validate([
         'terrain_id' => 'required|exists:terrains,id',
-        'date_debut' => 'required|date|after_or_equal:now',
+        'date_debut' => 'required|date|after:now',
         'duration' => 'required|integer|min:1|max:8',
     ]);
 
@@ -100,19 +102,107 @@ class ReservationController extends Controller
         return redirect()->route('reservations.create', $terrain_id)
                          ->with('error', 'Ce terrain n\'est pas disponible pour le moment.');
     }
-
+ 
    
 
-        Reservation::create([
+    $amount = $terrain->prix * $duration;
+
+    $reservation =  Reservation::create([
             'terrain_id' => $terrain_id,
             'sportive_id' => Auth::id(),
             'date_debut' => $date_debut,
             'date_fin' => $date_fin,
             'statut' => 'en attente',
+            'payment_status' => 'pending',
         ]);
 
-        return redirect()->route('home')->with('success', 'Reservation effectue avec succes ');
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        $session = Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => 'Réservation de terrain #' . $reservation->id,
+                    ],
+                    'unit_amount' => $amount * 100, 
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('reservations.payment.success', $reservation->id),
+            'cancel_url' => route('reservations.payment.cancel', $reservation->id),
+            'metadata' => [
+                'reservation_id' => $reservation->id,
+            ],
+        ]);
+
+        Payment::create([
+            'reservation_id' => $reservation->id,
+            'amount' => $amount,
+            'status' => 'pending',
+            'stripe_session_id' => $session->id,
+        ]);
+
+        return redirect($session->url);
     }
+
+
+    public function paymentSuccess($id)
+{
+    $reservation = Reservation::findOrFail($id);
+
+    if ($reservation->sportive_id !== Auth::id()) {
+        return redirect()->route('home')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette réservation.');
+    }
+
+    $reservation->update([
+        'statut' => 'confirmée',
+        'payment_status' => 'payé',
+    ]);
+
+    $payment = Payment::where('reservation_id', $reservation->id)->first();
+    if ($payment) {
+        $payment->update([
+            'status' => 'success',
+        ]);
+    }
+
+    return redirect()->route('reservations.index')->with('success', 'Paiement réussi ! Réservation confirmée.');
+}
+
+
+
+
+public function paymentCancel($id)
+{
+    $reservation = Reservation::findOrFail($id);
+
+    if ($reservation->sportive_id !== Auth::id()) {
+        return redirect()->route('home')->with('error', 'Vous n\'êtes pas autorisé à accéder à cette réservation.');
+    }
+
+    $reservation->update([
+        'statut' => 'annulée',
+        'payment_status' => 'échoué',
+    ]);
+
+    
+    $payment = Payment::where('reservation_id', $reservation->id)->first();
+    if ($payment) {
+        $payment->update([
+            'status' => 'failed',
+        ]);
+    }
+
+    return redirect()->route('reservations.create', $reservation->terrain_id)
+        ->with('error', 'Paiement annulé. Réservation non confirmée.');
+}
+
+
+
+
     
 
     public function destroy($id)
@@ -127,4 +217,6 @@ class ReservationController extends Controller
 
         return redirect()->route('reservations.index')->with('success', 'Reservation annulee avec succes !');
     }
+
+    
 }
