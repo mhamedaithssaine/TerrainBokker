@@ -17,6 +17,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ReservationAdminController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 
@@ -67,7 +68,6 @@ Route::resource('terrains',TerrainController::class);
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-Route::get('/dashboard/availabilities', [DashboardController::class, 'availabilities'])->name('dashboard.availabilities');
 Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
 Route::get('/dashboard/payments', [DashboardController::class, 'payments'])->name('dashboard.payments');
 Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
@@ -112,8 +112,14 @@ Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->
 
 // feedback 
 Route::middleware('auth')->post('/feedback', [HomeController::class, 'storeFeedback'])->name('feedback.store');
-
 Route::get('/dashboard/feedbacks', [FeedbackController::class, 'index'])->name('dashboard.feedback.index');
 Route::patch('dashboard/feedbacks/{feedback}', [FeedbackController::class, 'updateStatus'])->name('dashboard.feedback.update');
-
 Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index'])->name('components.feedbackrecents');
+
+
+
+
+//reservation with admin 
+Route::get('/dashboard/createreservation', [ReservationAdminController::class, 'createreservation'])->name('dashboard.createreservation');
+Route::post('/dashboard/createreservation/store', [ReservationAdminController::class, 'store'])->name('dashboard.createreservation.store');
+Route::get('/dashboard/createreservation/terrain/{terrain_id}/reservations', [ReservationAdminController::class, 'getTerrainReservations'])->name('dashboard.createreservation.reservations');
