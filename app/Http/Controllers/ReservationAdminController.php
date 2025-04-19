@@ -67,7 +67,7 @@ class ReservationAdminController extends Controller
         $endHour = (int) $date_fin->format('H');
         $endMinute = (int) $date_fin->format('i');
     
-        if ($startHour < 8 || ($endHour > 24 || ($endHour === 24 && $endMinute > 0))) {
+        if ($startHour < 8 || ($endHour > 24 || ($endHour === 22 && $endMinute > 0))) {
             return redirect()->route('dashboard.createreservation')
                 ->with('error', 'Les réservations doivent être entre 08:00 et 22:00.');
         }
@@ -123,8 +123,6 @@ class ReservationAdminController extends Controller
         Reservation::create([
             'terrain_id' => $terrain_id,
             'sportive_id' => $client_id,
-            'client_id' => $client_id,
-            'client_name' => $client->name,
             'date_debut' => $date_debut->format('Y-m-d H:i:s'),
             'date_fin' => $date_fin->format('Y-m-d H:i:s'),
             'payment_advance' => $payment_advance,
