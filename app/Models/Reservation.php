@@ -12,8 +12,11 @@ class Reservation extends Model
     protected $fillable = [
         'terrain_id',
         'sportive_id',
+        'client_id',
+        'client_name',
         'date_debut',
         'date_fin',
+        'payment_advance',
         'statut',
     ];
 
@@ -31,5 +34,10 @@ class Reservation extends Model
     public function utilisateur()
     {
         return $this->belongsTo(User::class, 'sportive_id');
+    }
+
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'client_id');
     }
 }
