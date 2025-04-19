@@ -109,13 +109,16 @@ Route::get('/reservations/create/{terrain_id}', [ReservationController::class, '
 Route::post('/reservations', [ReservationController::class, 'store'])->name('reservations.store');
 Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
+//payment 
+Route::get('/reservations/payment/success/{id}', [ReservationController::class, 'paymentSuccess'])->name('reservations.payment.success');
+Route::get('/reservations/payment/cancel/{id}', [ReservationController::class, 'paymentCancel'])->name('reservations.payment.cancel');
+
 
 // feedback 
 Route::middleware('auth')->post('/feedback', [HomeController::class, 'storeFeedback'])->name('feedback.store');
 Route::get('/dashboard/feedbacks', [FeedbackController::class, 'index'])->name('dashboard.feedback.index');
 Route::patch('dashboard/feedbacks/{feedback}', [FeedbackController::class, 'updateStatus'])->name('dashboard.feedback.update');
 Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index'])->name('components.feedbackrecents');
-
 
 
 
