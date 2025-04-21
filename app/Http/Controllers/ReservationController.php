@@ -7,8 +7,10 @@ use App\Models\Payment;
 use App\Models\Terrain;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
+use Illuminate\Support\Facades\Auth;
+use App\Mail\ReservationCancelledAdminNotification;
+
 class ReservationController extends Controller
 {
 
@@ -19,9 +21,12 @@ class ReservationController extends Controller
 
     public function index(){
         $reservations = Reservation::where('sportive_id', Auth::id())
-            ->with('terrain.categorie')->where('date_fin','>=',now())
-            ->orderBy('date_debut', 'desc')
-            ->get();
+        ->with('terrain.categorie')
+        ->where('date_fin', '>=', now())
+        ->where('statut', 'confirmée') 
+        ->where('payment_status', 'payé') 
+        ->orderBy('date_debut', 'desc')
+        ->get();
 
         return view('reservations.index', compact('reservations'));
     }
@@ -30,8 +35,10 @@ class ReservationController extends Controller
     {
         $terrain = Terrain::with('categorie')->findOrFail($terrain_id);
         $reservations = Reservation::where('terrain_id', $terrain_id)
-            ->where('date_debut', '>', Carbon::now())
-            ->get(['id', 'sportive_id', 'date_debut', 'date_fin']);             
+        ->where('date_debut', '>', Carbon::now())
+        ->where('statut', 'confirmée') 
+        ->where('payment_status', 'payé') 
+        ->get(['id', 'sportive_id', 'date_debut', 'date_fin']);         
         return view('reservations.create', compact('terrain', 'reservations'));
     }
 
@@ -78,15 +85,17 @@ class ReservationController extends Controller
 
     //verifie les conflis 
     $conflit = Reservation::where('terrain_id', $terrain_id)
-        ->where(function ($query) use ($date_debut, $date_fin) {
-            $query->whereBetween('date_debut', [$date_debut, $date_fin])
-                  ->orWhereBetween('date_fin', [$date_debut, $date_fin])
-                  ->orWhere(function ($q) use ($date_debut, $date_fin) {
-                      $q->where('date_debut', '<=', $date_debut)
-                        ->where('date_fin', '>=', $date_fin);
-                  });
-        })
-        ->first();
+    ->where('statut', 'confirmée')
+    ->where('payment_status', 'payé') 
+    ->where(function ($query) use ($date_debut, $date_fin) {
+        $query->whereBetween('date_debut', [$date_debut, $date_fin])
+              ->orWhereBetween('date_fin', [$date_debut, $date_fin])
+              ->orWhere(function ($q) use ($date_debut, $date_fin) {
+                  $q->where('date_debut', '<', $date_debut)
+                    ->where('date_fin', '>', $date_fin);
+              });
+    })
+    ->first();
 
     if ($conflit) {
         $message = 'Ce creneau est deja reserve de ' .
@@ -213,9 +222,58 @@ public function paymentCancel($id)
             return redirect()->route('home')->with('error', 'Vous n\'etes pas autorise a annuler cette reservation.');
         }
 
-        $reservation->delete();
+        $refundProcessed = false;
+       
+        if ($reservation->statut === 'confirmée' && $reservation->payment_status === 'payé') {
+         
+            $payment = $reservation->payment;
+           
+            if ($payment && $payment->stripe_session_id) {
+                try {
+                    Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+                    $session = \Stripe\Checkout\Session::retrieve($payment->stripe_session_id);
+                    $paymentIntentId = $session->payment_intent;
+    
+                    $refund = \Stripe\Refund::create([
+                        'payment_intent' => $paymentIntentId,
+                        'amount' => $payment->amount * 100, 
+                    ]);
+    
+                    $payment->update([
+                        'status' => 'refunded',
+                    ]);
+    
+                    $reservation->update([
+                        'statut' => 'annulée',
+                        'payment_status' => 'remboursé',
+                    ]);
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation annulee avec succes !');
+                    $refundProcessed = true;
+    
+                } catch (\Stripe\Exception\ApiErrorException $e) {
+                    return redirect()->route('reservations.index')
+                        ->with('error', 'Erreur lors du remboursement : ' . $e->getMessage());
+                }
+            } else {
+                $reservation->update([
+                    'statut' => 'annulée',
+                    'payment_status' => 'échoué',
+                ]);
+            }
+        }
+    
+        $reservation->delete();
+    
+        try {
+            \Mail::to(env('ADMIN_EMAIL'))->queue(new ReservationCancelledAdminNotification($reservation, $refundProcessed));
+        } catch (\Exception $e) {
+            \Log::error('Failed to queue admin notification email for reservation cancellation #' . $reservation->id . ': ' . $e->getMessage());
+        }
+        return redirect()->route('reservations.index')
+            ->with('success', 'Réservation annulée avec succès et montant remboursé (si applicable) !');
+      
+
     }
 
     
