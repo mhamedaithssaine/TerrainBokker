@@ -38,13 +38,6 @@
                         </div>
                     </div>
 
-                    @foreach ($reservations  as $re  ){
-                       <p>{{ $re->date_debut}}</p>
-                       <p>{{ $re->date_fin}}</p>
-                    }
-                        
-                    @endforeach
-
                     <form method="POST" action="{{ route('reservations.store') }}" id="reservation-form">
                         @csrf
                         <input type="hidden" name="terrain_id" value="{{ $terrain->id }}">
@@ -93,7 +86,7 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'timeGridWeek',
                 slotMinTime: '08:00:00',
-                slotMaxTime: '24:00:00',
+                slotMaxTime: '22:00:00',
                 allDaySlot: false,
                 height: 'auto',
                 events: [
