@@ -42,7 +42,7 @@
                     <nav class="hidden md:flex ml-10 space-x-8">
                         <a href="{{ route('home') }}" class="text-gray-900 hover:text-primary">Accueil</a>
                         @auth
-                        <a href="/reservations" class="text-gray-900 hover:text-primary">Mes Reservations</a>
+                        <a href="{{ url('/reservations') }}" class="text-gray-900 hover:text-primary">Mes Réservations</a>
                         @endauth
                        
                         <a href="{{ url('/contact') }}" class="text-gray-900 hover:text-primary">Contact</a>
@@ -85,14 +85,15 @@
             <div class="grid md:grid-cols-4 gap-8">
                 <div>
                     <a href="{{ route('home') }}" class="text-2xl font-bold text-white mb-4 block">TerrainBooker</a>
-                    <p class="text-gray-300">La meilleure plateforme pour réserver vos terrains sportifs.</p>
+                    <p class="text-gray-300">Réservez facilement votre terrain et profitez d’un match inoubliable entre collègues .</p>
                 </div>
                 <div>
                     <h4 class="font-semibold mb-4">Navigation</h4>
                     <ul class="space-y-2">
                         <li><a href="{{ route('home') }}" class="text-gray-300 hover:text-white">Accueil</a></li>
-                        <li><a href="#terrains" class="text-gray-300 hover:text-white">Terrains</a></li>
-                        <li><a href="#reservations" class="text-gray-300 hover:text-white">Réservations</a></li>
+                        <li>@auth
+                            <a href="{{ url('/reservations') }}" class="text-gray-300 hover:text-white">Mes Réservations</a>
+                            @endauth</li>
                         <li><a href="{{ url('/contact') }}" class="text-gray-300 hover:text-white">Contact</a></li>
                     </ul>
                 </div>
@@ -100,13 +101,13 @@
                     <h4 class="font-semibold mb-4">Contact</h4>
                     <ul class="space-y-2">
                         <li class="flex items-center text-gray-300">
-                            <i class="ri-map-pin-line mr-2"></i> 123 Rue du Sport, Paris
+                            <i class="ri-map-pin-line mr-2"></i> Hay Annahda Kelâat M'Gouna
                         </li>
                         <li class="flex items-center text-gray-300">
-                            <i class="ri-phone-line mr-2"></i> 01 23 45 67 89
+                            <i class="ri-phone-line mr-2"></i>  +212-662 799 725
                         </li>
                         <li class="flex items-center text-gray-300">
-                            <i class="ri-mail-line mr-2"></i> contact@terrainbooker.fr
+                            <i class="ri-mail-line mr-2"></i> manaradades@gmail.com
                         </li>
                     </ul>
                 </div>
