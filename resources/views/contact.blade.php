@@ -49,59 +49,97 @@
                         </form>
                     </div>
                 </div>
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <h3 class="card-title text-xl mb-4 text-primary">Informations de contact</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <div class="text-primary text-xl mr-4">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                </div>
-                                <div>
-                                    <p>123 Avenue du Sport, 75001 Paris, France</p>
-                                </div>
+                <div class="card bg-base-100 shadow-xl p-6">
+                    <h3 class="card-title text-2xl text-primary mb-6">Informations de contact</h3>
+                    <div class="grid gap-6">
+                        <div class="flex items-start gap-4">
+                            <div class="text-primary text-2xl">
+                                <i class="fas fa-map-marker-alt"></i>
                             </div>
-                            <div class="flex items-start">
-                                <div class="text-primary text-xl mr-4">
-                                    <i class="fas fa-phone"></i>
-                                </div>
-                                <div>
-                                    <p>+212-7-72-09-09-70</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="text-primary text-xl mr-4">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div>
-                                    <p>mhamedaithssaine1@gmail.com</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start">
-                                <div class="text-primary text-xl mr-4">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <div>
-                                    <p>Lun-Ven: 9h-20h | Sam-Dim: 10h-18h</p>
-                                </div>
+                            <div>
+                                <h4 class="font-semibold">Adresse</h4>
+                                <p>Hay Annahda, Kelâat M'Gouna, Maroc</p>
                             </div>
                         </div>
-                        <div class="mt-6">
-                            <div class="flex space-x-4">
-                                <a href="#" class="btn btn-circle btn-outline border-primary text-primary hover:bg-primary hover:text-white">
-                                    <i class="fab fa-facebook-f"></i>
-                                </a>
-                                <a href="#" class="btn btn-circle btn-outline border-primary text-primary hover:bg-primary hover:text-white">
-                                    <i class="fab fa-twitter"></i>
-                                </a>
-                                <a href="#" class="btn btn-circle btn-outline border-primary text-primary hover:bg-primary hover:text-white">
-                                    <i class="fab fa-instagram"></i>
-                                </a>
+                
+                        <div class="flex items-start gap-4">
+                            <div class="text-primary text-2xl">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Téléphone</h4>
+                                <p>0673 434 670</p>
+                                <p>0662 799 725</p>
+                            </div>
+                        </div>
+                
+                        <div class="flex items-start gap-4">
+                            <div class="text-primary text-2xl">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Email</h4>
+                                <p>manaradades@gmail.com</p>
+                            </div>
+                        </div>
+                
+                        <div class="flex items-start gap-4">
+                            <div class="text-primary text-2xl">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Horaires</h4>
+                                <p>Lun-Ven : 9h - 22h</p>
+                                <p>Sam-Dim : 10h - 22h</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
     </section>
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h3 class="text-2xl font-bold mb-4">Géolocalisation</h3>
+            <div id="map" style="height: 400px; width: 100%;"></div>
+        </div>
+    </section>
+@endsection
+@section('scripts')
+    <script>
+        function initializeMap() {
+            var latitude = @json($ecoleLatitude);
+            var longitude = @json($ecoleLongitude);
+
+            if (latitude && longitude) {
+                var map = L.map('map', {
+                    zoomControl: true,
+                    attributionControl: true 
+                }).setView([latitude, longitude], 14);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                var marker = L.marker([latitude, longitude]).addTo(map);
+
+                marker.bindPopup(`
+                    <div class="custom-popup">
+                        <h3>مؤسسة منارة دادس الخاصةInstitution manara dades privée</h3>
+                        <p>Hay Annahda Kelâat M'Gouna, Maroc</p>
+                        <p>4.8 ★★★★★ (4 avis)</p>
+                        <button onclick="window.open('https://www.openstreetmap.org/directions?to=${latitude},${longitude}', '_blank')">Agrandir</button>
+                    </div>
+                `).openPopup();
+
+                marker.on('click', function() {
+                    marker.openPopup();
+                });
+            }
+        }
+
+        window.onload = initializeMap;
+    </script>
 @endsection
