@@ -11,7 +11,11 @@ class ContactController extends Controller
 {
    public function index()
     {
-        return view('contact');
+
+        $ecoleLatitude = env('ECOLE_LATITUDE');
+        $ecoleLongitude = env('ECOLE_LONGITUDE');
+
+        return view('contact',compact('ecoleLatitude','ecoleLongitude'));
     }
 
 
@@ -24,7 +28,7 @@ class ContactController extends Controller
             'message'=>$request->message,
         ];
 
-         Mail::to('mhamedaithssaine1@gmail.com')->send(new ContactMail($data));
+         Mail::to(env('ADMIN_EMAIL'))->send(new ContactMail($data));
 
         return redirect()->route('contact')->with('success', 'Message envoyé avec succès !');
     }
