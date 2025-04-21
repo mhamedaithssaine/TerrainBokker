@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Reservation extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     protected $fillable = [
         'terrain_id',
@@ -35,10 +36,6 @@ class Reservation extends Model
         return $this->belongsTo(User::class, 'sportive_id');
     }
 
-    public function client()
-    {
-        return $this->belongsTo(User::class, 'client_id');
-    }
 
     public function payment()
     {
