@@ -12,7 +12,7 @@ class ReservationAdminController extends Controller
 {
     public function __construct()
     {
-      
+    
     }
 
     public function createreservation()
@@ -67,7 +67,7 @@ class ReservationAdminController extends Controller
         $endHour = (int) $date_fin->format('H');
         $endMinute = (int) $date_fin->format('i');
     
-        if ($startHour < 8 || ($endHour > 24 || ($endHour === 22 && $endMinute > 0))) {
+        if ($startHour < 8 || ($endHour > 22 || ($endHour === 22 && $endMinute > 0))) {
             return redirect()->route('dashboard.createreservation')
                 ->with('error', 'Les réservations doivent être entre 08:00 et 22:00.');
         }
@@ -105,8 +105,8 @@ class ReservationAdminController extends Controller
     
         if ($conflit) {
             $message = 'Ce créneau est déjà réservé de ' .
-                (new \DateTime($conflit->date_debut))->format('d/m/Y H:i') . ' à ' .
-                (new \DateTime($conflit->date_fin))->format('d/m/Y H:i') . '.';
+                (new \DateTime($conflit->date_debut))->format(' H:i') . ' à ' .
+                (new \DateTime($conflit->date_fin))->format(' H:i') . '.';
     
             return redirect()->route('dashboard.createreservation')
                 ->with('error', $message);
@@ -119,8 +119,11 @@ class ReservationAdminController extends Controller
         }
     
         // $client = User::find($client_id);
+
+        // dd($duration);
         $amount = $payment_advance * $duration;
     
+
         Reservation::create([
             'terrain_id' => $terrain_id,
             'sportive_id' => $client_id,
