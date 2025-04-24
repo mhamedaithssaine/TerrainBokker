@@ -29,6 +29,8 @@ class ReservationAdminController extends Controller
     {
         $reservations = Reservation::where('terrain_id', $terrain_id)
             ->where('date_debut', '>', Carbon::now())
+            ->where('statut','confirmée')
+            ->where('payment_status','payé')
             ->get(['id', 'date_debut', 'date_fin']);
 
         $events = $reservations->map(function ($reservation) {
@@ -92,17 +94,20 @@ class ReservationAdminController extends Controller
         $date_debut_str = $date_debut->format('Y-m-d H:i:s');
         $date_fin_str = $date_fin->format('Y-m-d H:i:s');
     
-        $conflit = Reservation::where('terrain_id', $terrain_id)
-            ->where(function ($query) use ($date_debut_str, $date_fin_str) {
-                $query->whereBetween('date_debut', [$date_debut_str, $date_fin_str])
-                    ->orWhereBetween('date_fin', [$date_debut_str, $date_fin_str])
-                    ->orWhere(function ($q) use ($date_debut_str, $date_fin_str) {
-                        $q->where('date_debut', '<=', $date_debut_str)
-                            ->where('date_fin', '>=', $date_fin_str);
-                    });
-            })
-            ->first();
-    
+        //verifie les conflis 
+                $conflit = Reservation::where('terrain_id', $terrain_id)
+                ->where('statut', 'confirmée')
+                ->where('payment_status', 'payé') 
+                ->where(function ($query) use ($date_debut_str, $date_fin_str) {
+                    $query->whereBetween('date_debut', [$date_debut_str, $date_fin_str])
+                        ->orWhereBetween('date_fin', [$date_debut_str, $date_fin_str])
+                        ->orWhere(function ($q) use ($date_debut_str, $date_fin_str) {
+                            $q->where('date_debut', '<', $date_debut_str)
+                                ->where('date_fin', '>', $date_fin_str);
+                        });
+                })
+                ->first();
+
         if ($conflit) {
             $message = 'Ce créneau est déjà réservé de ' .
                 (new \DateTime($conflit->date_debut))->format(' H:i') . ' à ' .
