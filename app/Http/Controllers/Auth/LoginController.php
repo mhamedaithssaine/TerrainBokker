@@ -44,7 +44,9 @@ class LoginController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
             $request->session()->put('user_id', $user->id); 
-            $request->session()->put('name', $user->name);   
+            $request->session()->put('name', $user->name); 
+            $request->session()->put('photo', $user->profile_photo); 
+
     
             if ($user->hasRole('admin')) {
                 return redirect()->route('dashboard.index');
@@ -63,7 +65,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->forget(['user_id','name']);
+        $request->session()->forget(['user_id','name','photo']);
         $request->session()->regenerate();
         return redirect('/');
     }
