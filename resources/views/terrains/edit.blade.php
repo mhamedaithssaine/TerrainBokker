@@ -46,21 +46,21 @@
                 @enderror
             </div>
 
+           <!-- Champ Tags -->
             <div class="mb-4">
-                <label for="sponsor_id" class="block text-sm font-medium text-gray-700">Sponsor (optionnel)</label>
-                <select name="sponsor_id" id="sponsor_id"
-                        class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
-                    <option value="">Aucun</option>
-                    @foreach ($sponsors as $sponsor)
-                        <option value="{{ $sponsor->id }}"
-                                {{ old('sponsor_id', $terrain->sponsor_id) == $sponsor->id ? 'selected' : '' }}>
-                            {{ $sponsor->name }}
+                <label for="tag_ids" class="block text-sm font-medium text-gray-700">Tags (optionnel)</label>
+                <select name="tag_ids[]" id="tag_ids" multiple
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm">
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, old('tag_ids', $terrain->tags->pluck('id')->toArray())) ? 'selected' : '' }}>
+                            {{ $tag->name }}
                         </option>
                     @endforeach
                 </select>
-                @error('sponsor_id')
+                @error('tag_ids')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
+                <small class="text-gray-500">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs tags.</small>
             </div>
 
             <div class="mb-4">
