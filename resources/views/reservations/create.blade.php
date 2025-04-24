@@ -76,7 +76,7 @@
     </div>
 
   
-
+@endsection
     @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 
@@ -92,13 +92,13 @@
                 events: [
                     @foreach ($reservations as $reservation)
                         {
-                            title: 'Réservé',
+                            title: 'Réservé par {{ $reservation->utilisateur->name ?? "Utilisateur" }}',
                             start: '{{ $reservation->date_debut }}',
                             end: '{{ $reservation->date_fin }}',
                             backgroundColor: '#ef4444',
                             borderColor: '#ef4444'
                         }@if (!$loop->last),@endif
-                    @endforeach,
+                    @endforeach
                     
                 ],
                 selectable: true,
@@ -124,4 +124,3 @@
         });
     </script>
     @endsection
-@endsection
