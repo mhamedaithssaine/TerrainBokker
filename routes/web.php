@@ -2,12 +2,12 @@
 
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\TerrainController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FeedbackController;
@@ -69,13 +69,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{category}', [CategoryController::class, 'destroy'])->name('destroy');
     });
 
-        // Sponsors
-        Route::get('/sponsors', [SponsorController::class, 'index'])->name('sponsors.index');
-        Route::get('/sponsors/create', [SponsorController::class, 'create'])->name('sponsors.create');
-        Route::post('/sponsors', [SponsorController::class, 'store'])->name('sponsors.store');
-        Route::get('/sponsors/{sponsor}/edit', [SponsorController::class, 'edit'])->name('sponsors.edit');
-        Route::put('/sponsors/{sponsor}', [SponsorController::class, 'update'])->name('sponsors.update');
-        Route::delete('/sponsors/{sponsor}', [SponsorController::class, 'destroy'])->name('sponsors.destroy');
+        // tags
+        Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
+        Route::get('/tags/create', [TagController::class, 'create'])->name('tags.create');
+        Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
+        Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
+        Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
+        Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 
         // Terrains
         Route::resource('terrains', TerrainController::class);
