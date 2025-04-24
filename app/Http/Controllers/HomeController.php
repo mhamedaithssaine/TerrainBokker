@@ -21,7 +21,7 @@ class HomeController extends Controller
         $categories = Category::all();
     
         
-        $query = Terrain::with('categorie');
+        $query = Terrain::with('categorie','tags');
     
      
         if ($request->filled('search')) {
