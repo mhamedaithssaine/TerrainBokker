@@ -86,50 +86,56 @@
                 </div>
             </section>
     <!-- Terrains Section -->
-    <section id="terrains" class="py-12 bg-gray-100">
+    <section id="terrains" class="py-16 bg-gradient-to-b from-gray-50 to-gray-100">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8 text-secondary">Nos Terrains</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 class="text-4xl font-extrabold text-center mb-12 text-emerald-600 tracking-tight">Nos Terrains</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse ($terrains as $terrain)
-                    <div class="card bg-base-100 shadow-xl">
-                        <figure>
-                            <img src="{{ asset('storage/' . $terrain->photo) }}" width="100%" alt="{{ $terrain->name }}" />
-                        </figure>
-                        <div class="card-body">
-                            <h3 class="card-title">{{ $terrain->name }}</h3>
-                            <p>{{ $terrain->description }}</p>
-                            <p><strong>Type :</strong> {{ $terrain->categorie->name }}</p>
-                            <p><strong>Prix :</strong> {{ $terrain->prix }} dh/heure</p>
-                            <p><strong>Adresse :</strong> {{ $terrain->adresse }}</p>
-
+                    <div class="relative group bg-white rounded-xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                        <div class="relative">
+                            <img src="{{ asset('storage/' . $terrain->photo) }}" alt="{{ $terrain->name }}" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"/>
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-2">{{ $terrain->name }}</h3>
+                            <p class="text-gray-600 mb-4 line-clamp-3">{{ $terrain->description }}</p>
+                            <div class="space-y-2 text-gray-700">
+                                <p><strong>Type :</strong> {{ $terrain->categorie->name }}</p>
+                                <p><strong>Prix :</strong> {{ $terrain->prix }} dh/heure</p>
+                                <p><strong>Adresse :</strong> {{ $terrain->adresse }}</p>
+                            </div>
+    
                             @auth
-                            @if (isset($reservations[$terrain->id]) && $reservations[$terrain->id]->isNotEmpty())
-                            <p><strong>Créneaux réservés :</strong></p>
-                            <ul class="list-disc pl-5">
-                                @foreach ($reservations[$terrain->id] as $reservation)
-                                    <li>{{ $reservation->date_debut->format('d/m/Y H:i') }} - {{ $reservation->date_fin->format('d/m/Y H:i') }}</li>
-                                @endforeach
-                            </ul>
-                        @else
-                            <p><strong>Disponibilité :</strong> Aucun créneau réservé pour le moment.</p>
-                        @endif
-                            @endauth
-                           
-                            <div class="card-actions justify-end">
-                                @auth
-                                    <a href="{{ route('reservations.create', $terrain->id) }}" class="btn bg-primary text-white border-none hover:bg-secondary">Réserver</a>
+                                @if (isset($reservations[$terrain->id]) && $reservations[$terrain->id]->isNotEmpty())
+                                    <div class="mt-4">
+                                        <p class="text-sm font-semibold text-red-600"><strong>Créneaux réservés :</strong></p>
+                                        <ul class="list-disc pl-5 text-gray-600 text-sm mt-2 space-y-1">
+                                            @foreach ($reservations[$terrain->id] as $reservation)
+                                                <li>{{ $reservation->date_debut->format('d/m/Y H:i') }} - {{ $reservation->date_fin->format('H:i') }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
                                 @else
-                                    <a href="{{ route('login') }}" class="btn bg-primary text-white border-none hover:bg-secondary">Connectez-vous pour réserver</a>
+                                    <p class="mt-4 text-sm font-semibold"><strong class="text-emerald-600">Disponibilité :</strong> Aucun créneau réservé pour le moment.</p>
+                                @endif
+                            @endauth
+    
+                            <!-- Action Button -->
+                            <div class="mt-6 flex justify-end">
+                                @auth
+                                    <a href="{{ route('reservations.create', $terrain->id) }}" class="inline-block px-6 py-2 bg-emerald-500 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition-colors duration-300">Réserver</a>
+                                @else
+                                    <a href="{{ route('login') }}" class="inline-block px-6 py-2 bg-emerald-500 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition-colors duration-300">Connectez-vous pour réserver</a>
                                 @endauth
                             </div>
                         </div>
                     </div>
                 @empty
-                    <p class="text-center">Aucun terrain disponible pour le moment.</p>
+                    <p class="text-center text-gray-600 text-lg">Aucun terrain disponible pour le moment.</p>
                 @endforelse
             </div>
-            <div class="mt-8 flex justify-center">
-                {{ $terrains->links() }}
+            <div class="mt-12 flex justify-center">
+                {{ $terrains->links('pagination::tailwind') }}
             </div>
         </div>
     </section>
