@@ -232,7 +232,7 @@ public function paymentCancel($id)
                 try {
                     Stripe::setApiKey(env('STRIPE_SECRET'));
     
-                    $session = \Stripe\Checkout\Session::retrieve($payment->stripe_session_id);
+                    $session = Session::retrieve($payment->stripe_session_id);
                     $paymentIntentId = $session->payment_intent;
     
                     $refund = \Stripe\Refund::create([
