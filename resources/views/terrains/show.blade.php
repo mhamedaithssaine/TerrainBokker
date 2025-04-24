@@ -37,8 +37,20 @@
                         <p class="text-lg font-medium text-gray-800 mb-4">{{ number_format($terrain->prix, 2) }} DH</p>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-500 font-medium">Sponsor</p>
-                        <p class="text-lg font-medium text-gray-800 mb-4">{{ $terrain->sponsor->name ?? 'Aucun' }}</p>
+                        <p class="card-text">
+                            Tags :
+                            @if($terrain->tags->isNotEmpty())
+                                @foreach($terrain->tags as $tag)
+                                    <span class="bg-gradient-to-r from-green-100 to-green-200 text-green-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300 mr-2">
+                                        {{ $tag->name }}
+                                    </span>
+                                @endforeach
+                            @else
+                                <span class="bg-gray-100 text-gray-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
+                                    Aucun
+                                </span>
+                            @endif
+                        </p>                    
                     </div>
                     <div>
                         <p class="text-sm text-gray-500 font-medium">Statut</p>
