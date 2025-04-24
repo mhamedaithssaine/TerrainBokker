@@ -33,7 +33,7 @@
                 <!-- Menu déroulant du profil -->
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center focus:outline-none">
-                        <img class="h-8 w-8 rounded-full object-cover" src="/api/placeholder/150/150" alt="Photo de profil">
+                        <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('storage/'. session('photo')) }}" alt="Photo de profil">
                         @if (session('name'))
                         <span class="ml-2 text-gray-700">{{ session('name') }}</span>
                     @else
