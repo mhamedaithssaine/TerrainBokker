@@ -99,8 +99,8 @@ class ReservationController extends Controller
 
     if ($conflit) {
         $message = 'Ce creneau est deja reserve de ' .
-                    (new \DateTime($conflit->date_debut))->format('d/m/Y H:i') . ' à ' .
-                    (new \DateTime($conflit->date_fin))->format('d/m/Y H:i') . '.';
+                    (new \DateTime($conflit->date_debut))->format(' H:i') . ' à ' .
+                    (new \DateTime($conflit->date_fin))->format(' H:i') . '.';
 
         return redirect()->route('reservations.create', $terrain_id)
                          ->with('error', $message);
@@ -274,6 +274,32 @@ public function paymentCancel($id)
             ->with('success', 'Réservation annulée avec succès et montant remboursé (si applicable) !');
       
 
+    }
+
+
+
+    //Pour les reservation recent dans back office 
+    public function getRecentReservations()
+    {
+        $reservations = Reservation::with(['terrain', 'utilisateur', 'payment'])
+            ->latest()
+            ->take(10)
+            ->get()
+            ->map(function ($reservation) {
+                return [
+                    'id' => $reservation->id,
+                    'client' => $reservation->utilisateur->name,
+                    'email' => $reservation->utilisateur->email,
+                    'terrain' => $reservation->terrain->name,
+                    'date' => $reservation->date_debut->format('d/m/Y'),
+                    'heure_debut' => $reservation->date_debut->format('H:i'),
+                    'heure_fin' => $reservation->date_fin->format('H:i'),
+                    'statut' => $reservation->statut,
+                    'montant' => $reservation->payment ? number_format($reservation->payment->amount, 2) . ' DH' : 'N/A',
+                ];
+            });
+
+        return response()->json($reservations);
     }
 
     
