@@ -7,6 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet">
       <!-- FullCalendar CDN -->
       <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+
+       <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Include Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -30,7 +37,37 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css">
+
+<style>
+    .leaflet-popup-content-wrapper {
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .leaflet-popup-content {
+        margin: 10px;
+    }
+    .custom-popup h3 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    .custom-popup p {
+        margin: 0.2rem 0;
+        color: #666;
+    }
+    .custom-popup button {
+        background-color: #38a169;
+        color: white;
+        padding: 0.3rem 0.6rem;
+        margin-top: 0.5rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+    }
+    .custom-popup button:hover {
+        background-color: #2f855a; 
+    }
+</style>
 </head>
 <body class="bg-white min-h-screen">
     <!-- Header -->
