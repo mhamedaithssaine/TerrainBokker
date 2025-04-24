@@ -51,10 +51,13 @@ Route::middleware('auth')->group(function () {
 
        // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/dashboard/bookings', [DashboardController::class, 'bookings'])->name('dashboard.bookings');
-    Route::get('/dashboard/payments', [DashboardController::class, 'payments'])->name('dashboard.payments');
-    Route::get('/dashboard/settings', [DashboardController::class, 'settings'])->name('dashboard.settings');
-    Route::put('/dashboard/settings', [DashboardController::class, 'updateSettings'])->name('dashboard.settings.update');
+    Route::get('/dashboard/resrvations', [DashboardController::class, 'indexReservation'])->name('dashboard.reservations.index');
+    Route::get('/dashboard/reservations/{reservation}', [DashboardController::class, 'showReservation'])->name('dashboard.reservations.show');
+
+
+    // Payments routes
+    Route::get('/dashboard/payments', [DashboardController::class, 'indexPayment'])->name('dashboard.payments.index');
+    Route::get('/dashboard/payments/{payment}', [DashboardController::class, 'showPayment'])->name('dashboard.payments.show');
 
       // Catégories
     Route::prefix('categories')->name('categories.')->group(function () {
@@ -91,7 +94,6 @@ Route::middleware('auth')->group(function () {
         //Manage feedback par admin 
         Route::get('/dashboard/feedbacks', [FeedbackController::class, 'index'])->name('dashboard.feedback.index');
         Route::patch('/dashboard/feedbacks/{feedback}', [FeedbackController::class, 'updateStatus'])->name('dashboard.feedback.update');
-        Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index'])->name('components.feedbackrecents');
 
 
         // Réservations par admin
@@ -101,6 +103,9 @@ Route::middleware('auth')->group(function () {
 
         // Statistiques
         Route::get('/components/stats-card', [StatistiqueController::class, 'StatistiqueCard'])->name('components.stats-card');
+        Route::get('/components/recent-reservations', [StatistiqueController::class, 'recentReservations'])->name('components.recent-reservations');
+        Route::get('/dashboard/feedbackrecents', [StatistiqueController::class, 'index'])->name('components.feedbackrecents');
+
     });
   
 
