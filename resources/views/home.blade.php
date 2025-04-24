@@ -16,7 +16,7 @@
 @endif
 
     <!-- Hero Section -->
-    <section id="accueil" class="hero min-h-[70vh]" style="background-image: url('https://picsum.photos/id/1058/1920/1080');">
+    <section id="accueil" class="hero min-h-[80vh]" style="background-image: url('{{ asset('storage/backgrounde/terrain2.jpg') }}')">
         <div class="hero-overlay bg-black bg-opacity-60"></div>
         <div class="hero-content text-center text-white">
             <div class="max-w-md">
@@ -104,7 +104,7 @@
                                 <p><strong>Prix :</strong> {{ $terrain->prix }} dh/heure</p>
                                 <p><strong>Adresse :</strong> {{ $terrain->adresse }}</p>
                                 <p>
-                                    <strong>Tags :</strong>
+                                   
                                     @if($terrain->tags->isNotEmpty())
                                         @foreach($terrain->tags as $tag)
                                             <span class="bg-gradient-to-r from-green-100 to-green-200 text-green-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300 mr-2">
@@ -164,22 +164,23 @@
             <h3 class="text-xl font-semibold mb-4 text-gray-800">Laissez votre avis</h3>
             <form action="{{ route('feedback.store') }}" method="POST">
                 @csrf
+
+                <div class="mb-4">
+                    <label for="note" class="block text-sm font-medium text-gray-600 mb-2">Note (1 à 5)</label>
+                    <div class="flex items-center space-x-1">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <i class="fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer transition-colors duration-200" data-value="{{ $i }}" onclick="rate(this)"></i>
+                        @endfor
+                    </div>
+                    <input type="hidden" name="note" id="note" value="">
+                  
+                </div>
                 <div class="mb-4">
                     <label for="commentaire" class="block text-sm font-medium text-gray-600 mb-2">Votre commentaire</label>
                     <textarea name="commentaire" id="commentaire" rows="4" class="textarea textarea-bordered w-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition" placeholder="Partagez votre expérience..." required></textarea>
                     @error('commentaire')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
-                </div>
-                <div class="mb-4">
-                    <label for="note" class="block text-sm font-medium text-gray-600 mb-2">Note (1 à 5)</label>
-                    <select name="note" id="note" class="select select-bordered w-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition">
-                        <option value="">Sélectionnez une note</option>
-                        @for ($i = 1; $i <= 5; $i++)
-                            <option value="{{ $i }}">{{ $i }} étoile{{ $i > 1 ? 's' : '' }}</option>
-                        @endfor
-                    </select>
-                   
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="btn bg-primary text-white border-none hover:bg-secondary rounded-full px-6 py-2 transition transform hover:scale-105">Envoyer</button>
@@ -195,7 +196,7 @@
                         <div class="flex items-center mb-4">
                             <div class="avatar">
                                 <div class="w-12 rounded-full">
-                                    <img src="{{ $feedback->user->profile_photo_url ?? 'https://via.placeholder.com/50' }}" alt="{{ $feedback->user->name }}" />
+                                    <img src="{{ asset('storage/'. $feedback->user->profile_photo) }}" alt="{{ $feedback->user->name }}" />
                                 </div>
                             </div>
                             <div class="ml-3">
@@ -219,4 +220,41 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('scripts')
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const noteInput = document.getElementById('note');
+        const initialValue = noteInput.value || 0; 
+        const stars = document.querySelectorAll('.fa-star');
+
+        stars.forEach((s, index) => {
+            if (index < initialValue) {
+                s.classList.remove('text-gray-300');
+                s.classList.add('text-yellow-400', 'fas');
+            }
+        });
+    });
+
+    function rate(star) {
+        const value = star.getAttribute('data-value');
+        const stars = document.querySelectorAll('.fa-star');
+        const noteInput = document.getElementById('note');
+
+        noteInput.value = value;
+
+        stars.forEach((s, index) => {
+            if (index < value) {
+                s.classList.remove('text-gray-300');
+                s.classList.add('text-yellow-400', 'fas');
+            } else {
+                s.classList.remove('text-yellow-400', 'fas');
+                s.classList.add('text-gray-300');
+            }
+        });
+    }
+
+</script>
 @endsection
