@@ -14,7 +14,6 @@ class Terrain extends Model
         'description',
         'photo',
         'prix',
-        'sponsor_id',
         'categorie_id',
         'statut',
         'adresse',
@@ -25,9 +24,9 @@ class Terrain extends Model
         return $this->belongsTo(Category::class, 'categorie_id');
     }
 
-    public function sponsor()
+    public function tags()
     {
-        return $this->belongsTo(Sponsor::class, 'sponsor_id');
+        return $this->belongsToMany(Tag::class, 'tag_terrain');
     }
 
     public function reservations()
