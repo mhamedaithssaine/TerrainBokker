@@ -25,11 +25,12 @@ class TerrainRequest extends FormRequest
             'name' => 'required|string|max:15',
             'categorie_id' => 'required|exists:categories,id',
             'prix' => 'required|numeric|min:0',
-            'sponsor_id' => 'nullable|exists:sponsors,id',
             'statut' => 'required|in:disponible,indisponible',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:4000', 
             'adresse' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'tag_ids' => 'nullable|array',
+            'tag_ids.*' => 'exists:tags,id',
         ];
     }
 
@@ -44,7 +45,6 @@ class TerrainRequest extends FormRequest
             'prix.required' => 'Le prix est requis.',
             'prix.numeric' => 'Le prix doit être un nombre.',
             'prix.min' => 'Le prix ne peut pas être négatif.',
-            'sponsor_id.exists' => 'Le sponsor sélectionné est invalide.',
             'statut.required' => 'Le statut est requis.',
             'statut.in' => 'Le statut doit être "disponible" ou "indisponible".',
             'photo.image' => 'Le fichier doit être une image.',
@@ -54,6 +54,8 @@ class TerrainRequest extends FormRequest
             'adresse.string' => 'L\'adresse doit être une chaîne de caractères.',
             'adresse.max' => 'L\'adresse ne peut pas dépasser 255 caractères.',
             'description.string' => 'La description doit être une chaîne de caractères.',
+            'tag_ids.*.exists' => 'Un ou plusieurs tags sélectionnés sont invalides.',
+
         ];
     }
 }
