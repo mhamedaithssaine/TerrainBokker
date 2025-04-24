@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateTerrainRequest;
+use App\Models\Tag;
 use App\Models\Sponsor;
 use App\Models\Terrain;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\TerrainRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateTerrainRequest;
 
 class TerrainController extends Controller
 {
@@ -17,7 +18,7 @@ class TerrainController extends Controller
      */
     public function index()
     {
-        $terrains = Terrain::with(['sponsor', 'categorie'])->orderBy('created_at', 'desc')
+        $terrains = Terrain::with([ 'categorie','tags'])->orderBy('created_at', 'desc')
         ->paginate(5);
         return view('terrains.index', compact('terrains'));
     }
@@ -28,8 +29,8 @@ class TerrainController extends Controller
     public function create()
     {
         $categories =Category::get();
-        $sponsors = Sponsor::get();
-        return view('terrains.create',compact('categories','sponsors'));
+        $tags = Tag::get();
+        return view('terrains.create',compact('categories','tags'));
     }
 
     /**
@@ -42,7 +43,6 @@ class TerrainController extends Controller
                 'name' => $request->name,
                 'categorie_id' => $request->categorie_id,
                 'prix' => $request->prix,
-                'sponsor_id' => $request->sponsor_id ?: null,
                 'statut' => $request->statut,
                 'adresse' => $request->adresse,
                 'description' => $request->description ?: null,
@@ -53,7 +53,10 @@ class TerrainController extends Controller
             }
             
             
-            Terrain::create($data);
+          $terrain =  Terrain::create($data);
+            if ($request->has('tag_ids')) {
+                $terrain->tags()->sync($request->input('tag_ids'));
+            }
     
             return redirect()->route('terrains.index')->with('success', 'Terrain créé avec succès.');
         } catch (\Exception $e) {
@@ -66,7 +69,7 @@ class TerrainController extends Controller
      */
     public function show(Terrain  $terrain)
     {
-        $terrain->load(['categorie', 'sponsor']); 
+        $terrain->load(['categorie', 'tags']); 
         return view('terrains.show',compact('terrain'));
     }
 
@@ -76,8 +79,8 @@ class TerrainController extends Controller
     public function edit(Terrain $terrain)
     {
         $categories = Category::all(); 
-        $sponsors = Sponsor::all();     
-        return view('terrains.edit', compact('terrain', 'categories', 'sponsors'));
+        $tags = Tag::all();     
+        return view('terrains.edit', compact('terrain', 'categories', 'tags'));
     }
 
     /**
@@ -105,6 +108,12 @@ class TerrainController extends Controller
             }
     
             $terrain->update($data);
+
+            if ($request->has('tag_ids')) {
+                $terrain->tags()->sync($request->input('tag_ids'));
+            } else {
+                $terrain->tags()->detach(); 
+            }
     
             return redirect()->route('terrains.index')->with('success', 'Terrain mis à jour avec succès.');
         } catch (\Exception $e) {
@@ -121,7 +130,7 @@ class TerrainController extends Controller
             if ($terrain->photo) {
                 Storage::disk('public')->delete($terrain->photo);
             }
-    
+            $terrain->tags()->detach();
             $terrain->delete();
     
             return redirect()->route('terrains.index')->with('success', 'Terrain supprime avec succes.');
