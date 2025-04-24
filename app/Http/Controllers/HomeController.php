@@ -9,6 +9,7 @@ use App\Models\Feedback;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\FeedbackRequest;
 
 class HomeController extends Controller
 {
@@ -73,21 +74,16 @@ class HomeController extends Controller
         
     }
 
-    public function storeFeedback(Request $request)
-    {
-        $request->validate([
-            'commentaire' => 'required|string|max:1000',
-            'note' => 'nullable|integer|between:1,5',
-        ]);
+    public function storeFeedback(FeedbackRequest $request)
+{
+    Feedback::create([
+        'user_id' => Auth::id(),
+        'commentaire' => $request->commentaire,
+        'note' => $request->note,
+        'status' => 'cacher',
+    ]);
 
-        Feedback::create([
-            'user_id' => Auth::id(),
-            'commentaire' => $request->commentaire,
-            'note' => $request->note,
-            'status' => 'cacher',
-        ]);
-
-        return redirect()->route('home')->with('success', 'Votre feedback a etais soumis avec succes ! Il sera visible apres moderation.');
-    }
+    return redirect()->route('home')->with('success', 'Votre feedback a été soumis avec succès ! Il sera visible après modération.');
+}
 
 }
