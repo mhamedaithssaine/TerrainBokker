@@ -13,17 +13,17 @@
     </div>
 
     <!-- Revenus du mois -->
-    {{-- <div class="bg-white rounded-lg shadow p-4">
+    <div class="bg-white rounded-lg shadow p-4">
         <div class="flex items-center">
             <div class="bg-green-100 p-3 rounded-full">
                 <i class="fas fa-euro-sign text-green-600"></i>
             </div>
             <div class="ml-4">
                 <h2 class="text-sm font-medium text-gray-600">Revenus du mois</h2>
-                <p class="text-2xl font-bold text-gray-900">{{ number_format($revenusMois, 2, ',', ' ') }} €</p>
+                <p class="text-2xl font-bold text-gray-900">{{ number_format($revenusMois, 2, ',', ' ') }} DH</p>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <!-- Note moyenne -->
     <div class="bg-white rounded-lg shadow p-4">
