@@ -4,16 +4,12 @@
 
 @section('content')
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Tableau de bord gestionnaire</h1>
-    {{-- @include('components.stats-card') --}}
     <div id="statique-card">
 
     </div>
 
-    @include('components.recent-bookings-table')
+    <div id="recent-reservations-table"></div>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        @include('components.calendar')
-        {{-- @include('components.feedbackrecents') --}}
-
         <div id="feedback-recents">
         </div>
     </div>
@@ -37,6 +33,15 @@
                     document.getElementById('statique-card').innerHTML = data;
                 })
                 .catch(error => console.error('Erreur lors du chargement des feedbacks:', error));
+
+
+            // Fetch Recent Reservations
+            fetch('{{ route("components.recent-reservations") }}')
+                            .then(response => response.text())
+                            .then(data => {
+                                document.getElementById('recent-reservations-table').innerHTML = data;
+                            })
+                            .catch(error => console.error('Erreur lors du chargement des réservations:', error));          
         });
 
 
