@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\Sponsor;
 use App\Models\Terrain;
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests\TerrainRequest;
 use Illuminate\Support\Facades\Storage;
@@ -128,12 +129,14 @@ class TerrainController extends Controller
     {
         try {
 
-            $reservationsCount = $terrain->reservations()->withTrashed()->count();
+            $reservationsCount = $terrain->reservations()
+            ->where('date_fin', '>=', Carbon::now())
+            ->count();
 
             if ($reservationsCount > 0) {
                 return redirect()->back()->with('error', 'Ce terrain ne peut pas être supprimé car il est réservé par des clients.');
             }
-            
+
             if ($terrain->photo) {
                 Storage::disk('public')->delete($terrain->photo);
             }
