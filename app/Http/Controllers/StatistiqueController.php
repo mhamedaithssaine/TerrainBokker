@@ -33,19 +33,24 @@ class StatistiqueController extends Controller
         return view('components.feedbackrecents', compact('feedbacks','reservations'));
 }
 
-public function recentReservations()
-    {
-        $reservations = Reservation::with(['terrain', 'utilisateur', 'payment'])
+        public function recentReservations()
+            {
+                    $reservations = Reservation::withTrashed()
+                    ->with(['terrain', 'utilisateur',
+                    'payment' => function ($query) {
+                        $query->withTrashed();
+                    }])
             ->latest()
-            ->take(10)
+            ->take(3)
             ->get();
 
-        return view('components.recent-reservations-table', compact('reservations'));
-    }
+                return view('components.recent-reservations-table', compact('reservations'));
+            }
 
     public function StatistiqueCard(){
                 
         $reservationsToday = Reservation::whereDate('date_debut', Carbon::today())
+        ->where('statut','confirmée')
                 ->count();
                 
             $noteMoyenne = Feedback::avg('note') ?? 0;
