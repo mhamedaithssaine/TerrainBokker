@@ -127,6 +127,13 @@ class TerrainController extends Controller
     public function destroy(Terrain  $terrain)
     {
         try {
+
+            $reservationsCount = $terrain->reservations()->withTrashed()->count();
+
+            if ($reservationsCount > 0) {
+                return redirect()->back()->with('error', 'Ce terrain ne peut pas être supprimé car il est réservé par des clients.');
+            }
+            
             if ($terrain->photo) {
                 Storage::disk('public')->delete($terrain->photo);
             }
