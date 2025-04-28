@@ -34,12 +34,14 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $reservation->date_debut->format('d/m/Y') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $reservation->date_debut->format('H:i') }} - {{ $reservation->date_fin->format('H:i') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                @if ($reservation->statut === 'confirmée')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Confirmé</span>
-                                @elseif ($reservation->statut === 'en attente')
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">En attente</span>
-                                @else
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Annulé</span>
+                                @if ( $reservation->statut == 'confirmée' && $reservation->payment_status === 'payé')
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Confirmée</span>
+                                @elseif ( $reservation->statut === 'annulée' && $reservation->payment_status === 'remboursé' )
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"> Remboursé </span>
+                                @elseif ( $reservation->statut === 'en attente' && $reservation->payment_status === 'pending' )
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"> En attente </span>
+                                @elseif ($reservation->statut === 'annulée' && $reservation->payment_status === 'échoué')
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">  Annulée </span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $reservation->payment ? number_format($reservation->payment->amount, 2) . ' DH' : 'N/A' }}</td>
