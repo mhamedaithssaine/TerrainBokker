@@ -23,13 +23,23 @@ class DashboardController extends Controller
    public function indexReservation()
     {
       
-        $reservations = Reservation::with(['terrain', 'utilisateur', 'payment'])->latest()->paginate(10);
+        $reservations = Reservation::withTrashed(['payment','utilisateur' ,'terrain'])
+        
+        ->orderBy('created_at', 'desc')
+        ->paginate(4);
         return view('dashboard.reservations.index', compact('reservations'));
     }
 
-    public function showReservation(Reservation $reservation)
+    public function showReservation($id)
     {
-        $reservation->load(['terrain', 'utilisateur', 'payment']);
+        $reservation = Reservation::withTrashed()
+            ->with(['terrain',
+                    'utilisateur',
+                    'payment' => function ($query) {
+                        $query->withTrashed();
+                    }])
+            ->findOrFail($id);
+    
         return view('dashboard.reservations.show', compact('reservation'));
     }
  
@@ -39,19 +49,21 @@ class DashboardController extends Controller
      */
     public function indexPayment()
     {
-        $payments = Payment::with(['reservation.utilisateur'])
-        ->whereHas('reservation', function ($query) {
-            $query->whereNull('deleted_at'); 
-        })
-        ->latest()
-        ->paginate(10);
+        
+        $payments = Payment::with(['reservation' => function ($query) {
+            $query->withTrashed()->with(['utilisateur']);
+           
+        }])
+        ->orderBy('created_at', 'desc')->paginate(4);
 
         return view('dashboard.payments.index', compact('payments'));
     }
 
     public function showPayment(Payment $payment)
     {
-        $payment->load(['reservation.utilisateur', 'reservation.terrain']);
+        $payment->load(['reservation' => function ($query) {
+        $query->withTrashed()->with(['utilisateur', 'terrain']);
+        }]);
         return view('dashboard.payments.show', compact('payment'));
     }
 
