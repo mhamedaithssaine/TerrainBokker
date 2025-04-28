@@ -16,6 +16,10 @@
                 <div class="mb-4 px-4 py-2 bg-green-100 text-green-700 rounded">
                     {{ session('success') }}
                 </div>
+                @elseif(session('error'))
+                <div class="mb-4 px-4 py-2 bg-red-100 text-red-700 rounded">
+                    {{ session('error') }}
+                </div>
             @endif
 
             @if (count($terrains) > 0)
