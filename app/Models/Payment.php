@@ -20,4 +20,9 @@ class Payment extends Model
     {
         return $this->belongsTo(Reservation::class);
     }
+
+    public function ticket()
+    {
+        return $this->hasOne(Ticket::class, 'payment_id');
+    }
 }
