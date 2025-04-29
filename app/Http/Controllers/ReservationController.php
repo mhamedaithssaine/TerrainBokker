@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Stripe\Stripe;
+use App\Models\Ticket;
 use App\Models\Payment;
 use App\Models\Terrain;
 use App\Models\Reservation;
@@ -176,7 +177,19 @@ class ReservationController extends Controller
         $payment->update([
             'status' => 'success',
         ]);
+
+         // Creer ticket auto lorsque payment reussi
+         $existingTicket = Ticket::where('payment_id', $payment->id)->first();
+         if (!$existingTicket) {
+             Ticket::create([
+                 'payment_id' => $payment->id,
+                 'price' => $payment->amount,
+                 'status' => 'ouvert',
+             ]);
+         }
     }
+
+
 
     return redirect()->route('reservations.index')->with('success', 'Paiement réussi ! Réservation confirmée.');
 }
@@ -250,6 +263,13 @@ public function paymentCancel($id)
                     ]);
 
                     $refundProcessed = true;
+
+                $ticket = Ticket::where('payment_id', $payment->id)->first();
+                if ($ticket) {
+                    $ticket->update([
+                        'status' => 'résolu',
+                    ]);
+                }
     
                 } catch (\Stripe\Exception\ApiErrorException $e) {
                     return redirect()->route('reservations.index')
@@ -275,32 +295,4 @@ public function paymentCancel($id)
       
 
     }
-
-
-
-    //Pour les reservation recent dans back office 
-    public function getRecentReservations()
-    {
-        $reservations = Reservation::with(['terrain', 'utilisateur', 'payment'])
-            ->latest()
-            ->take(10)
-            ->get()
-            ->map(function ($reservation) {
-                return [
-                    'id' => $reservation->id,
-                    'client' => $reservation->utilisateur->name,
-                    'email' => $reservation->utilisateur->email,
-                    'terrain' => $reservation->terrain->name,
-                    'date' => $reservation->date_debut->format('d/m/Y'),
-                    'heure_debut' => $reservation->date_debut->format('H:i'),
-                    'heure_fin' => $reservation->date_fin->format('H:i'),
-                    'statut' => $reservation->statut,
-                    'montant' => $reservation->payment ? number_format($reservation->payment->amount, 2) . ' DH' : 'N/A',
-                ];
-            });
-
-        return response()->json($reservations);
-    }
-
-    
 }
