@@ -20,7 +20,9 @@
                             {{ session('error') }}
                         </div>
                     @endif
-
+                    <div class="alert alert-warning mb-4 bg-yellow-100 text-yellow-800 border-yellow-300">
+                        <strong>Important :</strong> En cas d'annulation, seuls 60% du montant seront remboursés.
+                    </div>
                     @if ($reservations->isNotEmpty())
                         <div class="overflow-x-auto">
                             <table class="table w-full">
