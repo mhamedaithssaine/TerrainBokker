@@ -1,7 +1,8 @@
 <?php 
 namespace App\Http\Controllers;
 
-use TimeHelper;
+
+use App\Helpers\TimeHelper;
 use Carbon\Carbon;
 use Stripe\Stripe;
 use App\Models\Ticket;
@@ -269,7 +270,7 @@ public function paymentCancel($id)
     
                     $refund = \Stripe\Refund::create([
                         'payment_intent' => $paymentIntentId,
-                        'amount' => $payment->amount * 100, 
+                        'amount' => $payment->amount * 0.6 * 100, 
                     ]);
     
                     $payment->update([
@@ -310,7 +311,7 @@ public function paymentCancel($id)
             \Log::error('Failed to queue admin notification email for reservation cancellation #' . $reservation->id . ': ' . $e->getMessage());
         }
         return redirect()->route('reservations.index')
-            ->with('success', 'Réservation annulée avec succès et montant remboursé (si applicable) !');
+            ->with('success', 'Réservation annulée avec succès et 60 % du montant remboursé !');
       
 
     }
