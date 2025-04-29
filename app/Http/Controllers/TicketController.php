@@ -6,10 +6,11 @@ use Carbon\Carbon\now;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Vtiful\Kernel\Format;
 
 class TicketController extends Controller
 {
-     // methode pour telecharge ticket 
+     // methode pour telecharge ticket  en pdf 
 
      public function downloadTicket($id)
      {
@@ -44,7 +45,7 @@ class TicketController extends Controller
          $pdf->SetFont('Arial', 'I', 10);
          $pdf->SetTextColor(255, 255, 255);
          $pdf->Cell(0, 8, 'Emis le: ' . $ticket->created_at->format('d/m/Y H:i'), 0, 1, 'C', true);
-         $pdf->Cell(0, 8, 'le: ' . now(), 0, 1, 'C', true);
+         $pdf->Cell(0, 8, 'le: ' . now()->format('d/m/Y H:i'), 0, 1, 'C', true);
 
          $pdf->Ln(10);
      
