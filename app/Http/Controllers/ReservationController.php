@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 
+use TimeHelper;
 use Carbon\Carbon;
 use Stripe\Stripe;
 use App\Models\Ticket;
@@ -29,6 +30,14 @@ class ReservationController extends Controller
         ->orderBy('date_debut', 'desc')
         ->get();
 
+        foreach ($reservations as $reservation) {
+        $dateDebut = Carbon::parse($reservation->date_debut);
+         $now = TimeHelper::getServerTime();
+        $minutesUntilStart = $now->diffInMinutes($dateDebut, false);
+        $reservation->canCancel = $minutesUntilStart > 30;
+    }
+         
+       
         return view('reservations.index', compact('reservations'));
     }
 
@@ -234,6 +243,16 @@ public function paymentCancel($id)
         if ($reservation->sportive_id !== Auth::id()) {
             return redirect()->route('home')->with('error', 'Vous n\'etes pas autorise a annuler cette reservation.');
         }
+
+        $dateDebut = Carbon::parse($reservation->date_debut);
+        $now = TimeHelper::getServerTime();
+        $minutesUntilStart = $now->diffInMinutes($dateDebut, false);
+
+        if ($minutesUntilStart <= 30) {
+            return redirect()->route('reservations.index')
+                ->with('error', 'Vous ne pouvez pas annuler cette réservation moins de 30 minutes avant le début.');
+        }
+
 
         $refundProcessed = false;
        
