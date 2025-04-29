@@ -28,7 +28,8 @@
                                     <tr>
                                         <th>Terrain</th>
                                         <th>Type</th>
-                                        <th>Date et Heure</th>
+                                        <th>Date</th>
+                                        <th>Horaire</th>
                                         <th>Statut</th>
                                         <th>Action</th>
                                     </tr>
@@ -39,21 +40,27 @@
                                             <td>{{ $reservation->terrain->name }}</td>
                                             <td>{{ $reservation->terrain->categorie->name }}</td>
                                             <td>
-                                                {{ $reservation->date_debut->format('d/m/Y H:i') }} - 
-                                                {{ $reservation->date_fin->format('d/m/Y H:i') }}
+                                                {{ $reservation->date_debut->format('d/m/Y') }}
+                                            </td>
+                                            <td>
+                                                {{ $reservation->date_debut->format('H:i')  }}  - {{ $reservation->date_fin->format('H:i') }}
                                             </td>
                                             <td>{{ ucfirst($reservation->statut) }}</td>
                                            
                                             <td class="px-4 py-2 flex space-x-2">
-                                                @if($reservation->statut === 'confirmée' && $reservation->payment_status === 'payé')
-                                                    <a href="{{ route('reservations.ticket', $reservation->id) }}" class="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors duration-300">Voir le Ticket</a>
-                                                    @if(\Carbon\Carbon::parse($reservation->date_debut)->greaterThan(\Carbon\Carbon::now()->subMinutes(30)))
-                                                        <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" class="cancel-form">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300">Annuler</button>
-                                                        </form>
-                                                    @endif
+                                                @if($reservation->statut === 'confirmée' && $reservation->payment_status === 'payé' )
+                                                    <a href="{{ route('reservations.ticket', $reservation->id) }}" class="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors duration-300">
+                                                        Voir le Ticket
+                                                    </a>
+                                                @if ($reservation->canCancel)
+                                                <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" class="cancel-form">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300">Annuler</button>
+                                                </form>
+                                                @endif
+                                                        
+                                                
                                                 @else
                                                     <span class="text-gray-500 italic">En attente</span>
                                                 @endif
