@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomeController;
@@ -52,7 +53,7 @@ Route::middleware('auth')->group(function () {
        // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/resrvations', [DashboardController::class, 'indexReservation'])->name('dashboard.reservations.index');
-    Route::get('/dashboard/reservations/{reservation}', [DashboardController::class, 'showReservation'])->name('dashboard.reservations.show');
+    Route::get('/dashboard/reservations/{id}', [DashboardController::class, 'showReservation'])->name('dashboard.reservations.show');
 
 
     // Payments routes
@@ -120,6 +121,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/reservations/{id}', [ReservationController::class, 'destroy'])->name('reservations.destroy');
         Route::get('/reservations/payment/success/{id}', [ReservationController::class, 'paymentSuccess'])->name('reservations.payment.success');
         Route::get('/reservations/payment/cancel/{id}', [ReservationController::class, 'paymentCancel'])->name('reservations.payment.cancel');
+        Route::get('/reservations/{id}/ticket', [TicketController::class, 'downloadTicket'])->name('reservations.ticket');
         
         // Feedback par sportive 
         Route::post('/feedback', [HomeController::class, 'storeFeedback'])->name('feedback.store'); 
