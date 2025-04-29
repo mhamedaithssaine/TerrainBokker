@@ -44,7 +44,7 @@
 
                         <div class="mb-4">
                             <label for="date_debut" class="block text-sm font-medium text-gray-700">Date et heure de début</label>
-                            <input type="datetime-local" name="date_debut" id="date_debut" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required min="{{ now()->format('Y-m-d\TH:i') }}">
+                            <input type="datetime-local" name="date_debut" id="date_debut" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" required min="{{ now()->format('Y-m-d\TH:i') }}">
                             @error('date_debut')
                                 <span class="text-red-600 text-sm">{{ $message }}</span>
                             @enderror
@@ -52,7 +52,7 @@
 
                         <div class="mb-4">
                             <label for="duration" class="block text-sm font-medium text-gray-700">Durée</label>
-                            <select name="duration" id="duration" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required>
+                            <select name="duration" id="duration" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 sm:text-sm" required>
                                 @for ($i = 1; $i <= 8; $i++)
                                     <option value="{{ $i }}">{{ $i }} heure{{ $i > 1 ? 's' : '' }}</option>
                                 @endfor
