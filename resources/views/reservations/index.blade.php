@@ -3,7 +3,7 @@
 @section('title', 'Mes Réservations')
 
 @section('content')
-    <div class="py-12">
+    <div class="py-12 mt-12	">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -43,12 +43,20 @@
                                                 {{ $reservation->date_fin->format('d/m/Y H:i') }}
                                             </td>
                                             <td>{{ ucfirst($reservation->statut) }}</td>
-                                            <td>
-                                                <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment annuler cette réservation ?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn bg-red-500 text-white border-none hover:bg-red-600 text-sm">Annuler</button>
-                                                </form>
+                                           
+                                            <td class="px-4 py-2 flex space-x-2">
+                                                @if($reservation->statut === 'confirmée' && $reservation->payment_status === 'payé')
+                                                    <a href="{{ route('reservations.ticket', $reservation->id) }}" class="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors duration-300">Voir le Ticket</a>
+                                                    @if(\Carbon\Carbon::parse($reservation->date_debut)->greaterThan(\Carbon\Carbon::now()->subMinutes(30)))
+                                                        <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST" class="cancel-form">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300">Annuler</button>
+                                                        </form>
+                                                    @endif
+                                                @else
+                                                    <span class="text-gray-500 italic">En attente</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
