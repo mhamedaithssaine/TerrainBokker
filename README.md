@@ -34,6 +34,8 @@
 
 3. **Fonctionnalités Transversales**  
 - `Gestion et modération des avis.`
+
+
 --
 
 ## Structure du Projet
