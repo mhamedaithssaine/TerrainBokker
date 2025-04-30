@@ -1,66 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TerrainBooker - Plateforme de Réservation de Terrains Sportifs
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+`TerrainBooker est une application web conçue pour simplifier la réservation de terrains sportifs, ciblant les écoles, centres sportifs, et amateurs de sports collectifs (football, basketball, etc.). Elle permet aux utilisateurs de vérifier les disponibilités, réserver des créneaux, payer en ligne, et laisser des avis. Les administrateurs peuvent gérer les terrains, les réservations, les paiements, et les retours via un tableau de bord sécurisé.`
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Problématique
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+`Difficulté pour les utilisateurs à trouver et réserver rapidement des terrains sportifs. Gestion manuelle des réservations chronophage, entraînant des erreurs comme les doubles réservations. Manque de centralisation des informations (disponibilités, paiements, avis).`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Solution
 
-## Learning Laravel
+`TerrainBooker propose une plateforme centralisée qui vérifie automatiquement les disponibilités des terrains en fonction des dates et heures, simplifie la réservation et le paiement en ligne, permet de laisser des avis sur les services, et offre un tableau de bord sécurisé pour les administrateurs avec un système de rôles et permissions.`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Objectifs
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+`Centraliser la réservation de terrains sportifs. Simplifier la gestion des disponibilités et réservations pour les administrateurs. Offrir une expérience utilisateur fluide pour les amateurs de sport. Intégrer des paiements en ligne sécurisés et un système de feedback.`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Fonctionnalités Principales
 
-## Laravel Sponsors
+### Pour les Utilisateurs (Sportives)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+`Vérification des disponibilités via un calendrier. Réservation d’un créneau et paiement sécurisé via Stripe. Notation et commentaire sur le service après une réservation. Consultation et annulation des réservations via un espace utilisateur.`
 
-### Premium Partners
+### Pour les Administrateurs
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+`Attribution et modification des rôles et permissions. Ajout, modification, suppression des terrains, catégories, et tags. Suivi des réservations, paiements, et feedbacks. Modération des feedbacks (publier/cacher).`
 
-## Contributing
+### Fonctionnalités Transversales
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`Gestion et modération des avis. Vérification automatique des créneaux libres en temps réel.`
 
-## Code of Conduct
+## Structure du Projet
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Back Office (Administrateur)
 
-## Security Vulnerabilities
+`Tableau de bord avec vue globale des utilisateurs, réservations, paiements, et feedbacks. Gestion des utilisateurs (liste, détails, attribution des rôles/permissions). Gestion des terrains, catégories, et tags (ajout, modification, suppression). Suivi des réservations (statuts : confirmée, annulée, remboursée) et statistiques. Suivi des transactions et modération des feedbacks.`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Front Office (Utilisateur)
 
-## License
+`Page d’accueil avec liste des terrains disponibles et feedbacks. Page de recherche avec filtres (disponibilités, catégories, prix). Page de réservation pour sélectionner un créneau, payer via Stripe, et confirmer. Espace utilisateur pour suivre et annuler les réservations, et gérer le compte (nom, email, mot de passe).`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Entités Principales
+
+`Utilisateur (User) : Sportives et administrateurs (name, email, password, profile_photo). Terrain (Terrain) : Détails des terrains (name, description, image, prix, categorie_id). Réservation (Reservation) : Créneaux réservés (terrain_id, sportive_id, date_debut, date_fin, statut). Feedback (Feedback) : Avis des utilisateurs (user_id, commentaire, note, status). Paiement (Payment) : Transactions (reservation_id, amount, status, stripe_session_id). Rôle (Role) et Permission (Permission) : Gestion des accès. Categorie (Category) et Tags (Tag) : Organisation des terrains.`
+
+## Technologies Utilisées
+
+`Front-end : HTML, JavaScript, Tailwind CSS (interface moderne et responsive). Back-end : PHP avec Laravel (gestion des services serveur). Base de données : MySQL. API externes : Stripe (paiements sécurisés), WorldTimeAPI (gestion des fuseaux horaires), Leaflet (géolocalisation des terrains).`
+
+## Prérequis
+
+`PHP >= 8.0, Composer, Node.js et npm, MySQL, Compte Stripe pour les paiements, Clé API WorldTimeAPI (optionnel), Clé API Leaflet (optionnel).`
+
+## Installation
+
+`1. Cloner le dépôt : git clone https://github.com/votre-utilisateur/terrainbooker.git && cd terrainbooker. 2. Installer les dépendances : composer install && npm install. 3. Configurer l’environnement : cp .env.example .env, puis configurer les variables (base de données, Stripe, fuseau horaire). 4. Générer la clé d’application : php artisan key:generate. 5. Créer la base de données et exécuter les migrations : php artisan migrate. 6. Compiler les assets : npm run dev. 7. Lancer le serveur : php artisan serve. 8. Accéder à l’application : http://localhost:8000.`
+
+## Utilisation
+
+### Pour les Utilisateurs (Sportives)
+
+`Inscrivez-vous ou connectez-vous via la page d’accueil. Recherchez un terrain via la page de recherche (filtrez par catégorie, prix, disponibilité). Sélectionnez un créneau horaire et procédez au paiement via Stripe. Laissez un feedback après votre réservation depuis votre espace utilisateur. Consultez ou annulez vos réservations dans votre espace utilisateur.`
+
+### Pour les Administrateurs
+
+`Connectez-vous avec un compte administrateur. Accédez au tableau de bord pour gérer les utilisateurs (attribuer des rôles/permissions), ajouter ou modifier des terrains, catégories, et tags, superviser les réservations et paiements, et modérer les feedbacks (publier/cacher).`
+
+## Structure des Dossiers
+
+`app/Models/ : Modèles Laravel (User, Terrain, Reservation, Feedback, etc.). app/Http/Controllers/ : Contrôleurs pour gérer les requêtes. resources/views/ : Vues Blade (pages front et back office). routes/web.php : Routes de l’application. public/ : Fichiers statiques (images, CSS, JS).`
+
+## Annexes
+
+`Maquettes : Interfaces utilisateur disponibles dans le dossier docs/maquettes/. Diagrammes UML : Diagrammes de cas d’utilisation et de classes dans docs/uml/.`
+
+## Contribution
+
+`1. Forkez le projet. 2. Créez une branche pour votre fonctionnalité (git checkout -b feature/nouvelle-fonctionnalite). 3. Commitez vos changements (git commit -m "Ajout de la fonctionnalité X"). 4. Poussez votre branche (git push origin feature/nouvelle-fonctionnalite). 5. Créez une Pull Request.`
+
+## Licence
+
+`Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.`
+
+---
+
+**TerrainBooker** - Simplifiez la réservation de terrains sportifs dès aujourd’hui !
