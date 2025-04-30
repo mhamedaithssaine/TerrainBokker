@@ -21,14 +21,19 @@
 ## Fonctionnalités Principales
 
 1. **Pour les Utilisateurs (Sportives)**  
-   `Vérification des disponibilités via un calendrier. Réservation d’un créneau et paiement sécurisé via Stripe. Notation et commentaire sur le service après une réservation. Consultation et annulation des réservations via un espace utilisateur.`
+  - `Vérification des disponibilités via un calendrier.` 
+  - `Réservation d’un créneau et paiement sécurisé via Stripe.` 
+  - `Notation et commentaire sur le service après une réservation.`
+  - `Consultation et annulation des réservations via un espace utilisateur.`
 
 2. **Pour les Administrateurs**  
-   `Attribution et modification des rôles et permissions. Ajout, modification, suppression des terrains, catégories, et tags. Suivi des réservations, paiements, et feedbacks. Modération des feedbacks (publier/cacher).`
+- `Attribution et modification des rôles et permissions.` 
+- `Ajout, modification, suppression des terrains, catégories, et tags.`
+- `Suivi des réservations, paiements, et feedbacks`
+- `Modération des feedbacks (publier/cacher).`
 
 3. **Fonctionnalités Transversales**  
-   `Gestion et modération des avis. Vérification automatique des créneaux libres en temps réel.`
-
+- `Gestion et modération des avis.`
 --
 
 ## Structure du Projet
@@ -64,10 +69,14 @@
 
 ## Technologies Utilisées
 
-`Front-end : HTML, JavaScript, Tailwind CSS (interface moderne et responsive). 
-Back-end : PHP avec Laravel (gestion des services serveur).
-Base de données : MySQL. API externes : Stripe (paiements sécurisés), 
-WorldTimeAPI (gestion des fuseaux horaires), Leaflet (géolocalisation des terrains).`
+1. **Front-end** : 
+- `HTML, `
+- `JavaScript,`
+- `Tailwind CSS (interface moderne et responsive).`
+2. **Back-end** : 
+- `PHP avec Laravel (gestion des services serveur).`
+- `Base de données : MySQL. API externes : Stripe (paiements sécurisés),` 
+- `WorldTimeAPI (gestion des fuseaux horaires), Leaflet (géolocalisation des terrains).`
 
 --
 
@@ -86,13 +95,14 @@ WorldTimeAPI (gestion des fuseaux horaires), Leaflet (géolocalisation des terra
 
 ## Installation
 
-1.` Cloner le dépôt : git clone https://github.com/votre-utilisateur/terrainbooker.git && cd terrainbooker.`
-2. `Installer les dépendances : composer install && npm install.`
-3.`Configurer l’environnement : cp .env.example .env, puis configurer les variables (base de données, Stripe, fuseau horaire).`
-4. `Générer la clé d’application : php artisan key:generate. 5. Créer la base de données et exécuter les migrations : php artisan migrate.`
-6.` Compiler les assets : npm run dev. `
-7. `Lancer le serveur : php artisan serve.`
-8. `Accéder à l’application : http://localhost:8000.`
+- `Cloner le dépôt : git clone https://github.com/mhamedaithssaine/TerrainBokker `
+- `Installer les dépendances : composer install && npm install.`
+- `Configurer l’environnement : cp .env.example .env, puis configurer les variables (base de données, Stripe, fuseau horaire).`
+- `Générer la clé d’application : php artisan key:generate.` 
+- `Créer la base de données et exécuter les migrations : php artisan migrate.`
+- `Compiler les assets : npm run dev. `
+- `Lancer le serveur : php artisan serve.`
+- `Accéder à l’application : http://localhost:8000.`
 
 --
 
