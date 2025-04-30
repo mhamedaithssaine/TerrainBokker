@@ -1,12 +1,12 @@
 <?php
 
 
-use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TerrainController;
@@ -18,6 +18,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\StatistiqueController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\SportiveProfileController;
 use App\Http\Controllers\ReservationAdminController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -125,6 +126,11 @@ Route::middleware('auth')->group(function () {
         
         // Feedback par sportive 
         Route::post('/feedback', [HomeController::class, 'storeFeedback'])->name('feedback.store'); 
+
+        // Profile sportive 
+        Route::get('/sportive/profile', [SportiveProfileController::class, 'show'])->name('sportive.profile');
+        Route::get('/sportive/profile/edit', [SportiveProfileController::class, 'edit'])->name('sportive.profile.edit');
+        Route::put('/sportive/profile', [SportiveProfileController::class, 'update'])->name('sportive.profile.update');
     });
 
 });
