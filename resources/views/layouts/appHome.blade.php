@@ -92,15 +92,24 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="hidden md:flex space-x-2">
-                        <a href="#" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary">
-                            <i class="ri-facebook-fill ri-lg"></i>
+                        @auth
+                        <a href="{{ route('sportive.profile') }}" class="flex items-center space-x-2 text-gray-600 hover:text-primary transition-colors duration-200" title="Mon Profil">
+                            <div class="relative profile-photo-container">
+                                @if (Auth::user()->profile_photo)
+                                    <img class="h-8 w-8 rounded-full object-cover border-2 border-emerald-500 shadow-sm" 
+                                         src="{{ asset('storage/' . Auth::user()->profile_photo) }}" 
+                                         alt="Photo de profil">
+                                    <span class="absolute bottom-0 right-0 h-4 w-4 bg-emerald-500 border-2 border-white rounded-full"></span>
+                                @else
+                                    <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300">
+                                        <i class="ri-user-fill text-gray-500"></i>
+                                    </div>
+                                @endif
+                            </div>
+                            <span class="text-gray-700 font-medium truncate max-w-[150px]">{{ Auth::user()->name }}</span>
                         </a>
-                        <a href="#" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary">
-                            <i class="ri-twitter-fill ri-lg"></i>
-                        </a>
-                        <a href="#" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-primary">
-                            <i class="ri-instagram-fill ri-lg"></i>
-                        </a>
+                    @endauth
+                    </a>
                     </div>
                     @auth
                         <form action="{{ route('logout') }}" method="POST" class="inline">
