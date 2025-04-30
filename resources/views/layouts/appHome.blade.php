@@ -12,6 +12,9 @@
       @vite(['resources/css/app.css', 'resources/js/app.js']);
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
+
        <!-- Include Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Include Leaflet JS -->
@@ -19,7 +22,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-  
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
@@ -71,6 +75,25 @@
     }
     .custom-popup button:hover {
         background-color: #2f855a; 
+    }
+     /*pur swipper*/
+     .swiper-pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+    .swiper-pagination-bullet {
+        background-color: #d1d5db; 
+        opacity: 0.5;
+        width: 10px;
+        height: 10px;
+        transition: all 0.3s ease;
+    }
+    .swiper-pagination-bullet-active {
+        background-color: #10b981; 
+        opacity: 1;
+        width: 12px;
+        height: 12px;
     }
 </style>
 </head>
