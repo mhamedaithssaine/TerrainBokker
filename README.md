@@ -33,7 +33,7 @@
     - `Modération des feedbacks (publier/cacher).`
 
 3. **Fonctionnalités Transversales**  
-- `Gestion et modération des avis.`
+    - `Gestion et modération des avis.`
 
 
 --
