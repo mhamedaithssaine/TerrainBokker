@@ -4,11 +4,14 @@
 
 @section('content')
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Tableau de bord gestionnaire</h1>
+    <!--pour les statique-->
     <div id="statique-card">
 
     </div>
 
+      <!--pour les recent-reservations -->
     <div id="recent-reservations-table"></div>
+    <!--pour les feedback-recents cacher-->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div id="feedback-recents">
         </div>
