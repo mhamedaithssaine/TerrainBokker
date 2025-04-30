@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class UpdateProfileRequest extends FormRequest
+class UpdateProfileSportiveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,13 +25,14 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(), 
-            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', // 2MB max
+           'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048', 
             'current_password' => 'required|string',
             'password' => 'nullable|string|min:8|confirmed',
         ];
     }
+
 
     public function messages(): array
     {
@@ -49,10 +50,6 @@ class UpdateProfileRequest extends FormRequest
         ];
     }
 
-
-    /**
-     * Validate current password before proceeding.
-     */
     protected function passedValidation(): void
     {
         $user = Auth::user();
