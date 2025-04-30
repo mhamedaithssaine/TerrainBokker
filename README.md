@@ -21,16 +21,16 @@
 ## Fonctionnalités Principales
 
 1. **Pour les Utilisateurs (Sportives)**  
-  - `Vérification des disponibilités via un calendrier.` 
-  - `Réservation d’un créneau et paiement sécurisé via Stripe.` 
-  - `Notation et commentaire sur le service après une réservation.`
-  - `Consultation et annulation des réservations via un espace utilisateur.`
+    - `Vérification des disponibilités via un calendrier.` 
+    - `Réservation d’un créneau et paiement sécurisé via Stripe.` 
+    - `Notation et commentaire sur le service après une réservation.`
+    - `Consultation et annulation des réservations via un espace utilisateur.`
 
 2. **Pour les Administrateurs**  
-- `Attribution et modification des rôles et permissions.` 
-- `Ajout, modification, suppression des terrains, catégories, et tags.`
-- `Suivi des réservations, paiements, et feedbacks`
-- `Modération des feedbacks (publier/cacher).`
+    - `Attribution et modification des rôles et permissions.` 
+    - `Ajout, modification, suppression des terrains, catégories, et tags.`
+    - `Suivi des réservations, paiements, et feedbacks`
+    - `Modération des feedbacks (publier/cacher).`
 
 3. **Fonctionnalités Transversales**  
 - `Gestion et modération des avis.`
