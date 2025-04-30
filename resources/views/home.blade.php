@@ -154,69 +154,85 @@
         </div>
     </section>
 
-  <!-- Feedback Section -->
-<section id="feedback" class="py-12 bg-gray-50">
+ 
+<!-- Feedback Section -->
+<section id="feedback" class="py-10 bg-gray-50">
     <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-8 text-secondary">Avis de nos utilisateurs</h2>
+        <h2 class="text-2xl font-bold text-center mb-6 text-secondary">Avis de nos utilisateurs</h2>
 
         @auth
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-            <h3 class="text-xl font-semibold mb-4 text-gray-800">Laissez votre avis</h3>
+        <div class="bg-white p-5 rounded-lg shadow-md mb-6 max-w-lg mx-auto">
+            <h3 class="text-lg font-semibold mb-3 text-gray-800">Laissez votre avis</h3>
             <form action="{{ route('feedback.store') }}" method="POST">
                 @csrf
 
                 <div class="mb-4">
-                    <label for="note" class="block text-sm font-medium text-gray-600 mb-2">Note (1 à 5)</label>
+                    <label for="note" class="block text-sm font-medium text-gray-600 mb-1">Note (1 à 5)</label>
                     <div class="flex items-center space-x-1">
                         @for ($i = 1; $i <= 5; $i++)
-                            <i class="fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer transition-colors duration-200" data-value="{{ $i }}" onclick="rate(this)"></i>
+                            <i class="fa-star text-xl text-gray-300 hover:text-yellow-400 cursor-pointer transition-colors duration-200 transform hover:scale-110" data-value="{{ $i }}" onclick="rate(this)"></i>
                         @endfor
                     </div>
                     <input type="hidden" name="note" id="note" value="">
-                  
-                </div>
-                <div class="mb-4">
-                    <label for="commentaire" class="block text-sm font-medium text-gray-600 mb-2">Votre commentaire</label>
-                    <textarea name="commentaire" id="commentaire" rows="4" class="textarea textarea-bordered w-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition" placeholder="Partagez votre expérience..." required></textarea>
-                    @error('commentaire')
+                    @error('note')
                         <span class="text-red-500 text-sm">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mb-4">
+                    <label for="commentaire" class="block text-sm font-medium text-gray-600 mb-1">Votre commentaire</label>
+                    <textarea name="commentaire" id="commentaire" rows="3" class="textarea textarea-bordered w-full border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-20 transition rounded-md" placeholder="Partagez votre expérience..." required></textarea>
+                  
+                </div>
                 <div class="flex justify-end">
-                    <button type="submit" class="btn bg-primary text-white border-none hover:bg-secondary rounded-full px-6 py-2 transition transform hover:scale-105">Envoyer</button>
+                    <button type="submit" class="btn bg-primary text-white border-none hover:bg-secondary rounded-full px-5 py-1.5 transition transform hover:scale-105">Envoyer</button>
                 </div>
             </form>
         </div>
         @endauth
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @forelse ($feedbacks as $feedback)
-                <div class="card bg-base-100 shadow-xl">
-                    <div class="card-body">
-                        <div class="flex items-center mb-4">
-                            <div class="avatar">
-                                <div class="w-12 rounded-full">
-                                    <img src="{{ asset('storage/'. $feedback->user->profile_photo) }}" alt="{{ $feedback->user->name }}" />
+        <div class="swiper mySwiper max-w-7xl mx-auto">
+            <div class="swiper-wrapper">
+                @forelse ($feedbacks as $feedback)
+                    <div class="swiper-slide">
+                        <div class="card bg-white shadow-md p-5 rounded-lg max-w-xs mx-auto">
+                            <div class="card-body">
+                                <div class="flex items-center mb-3">
+                                    <div class="avatar">
+                                        <div class="w-10 h-10 rounded-full overflow-hidden">
+                                            @if ($feedback->user->profile_photo)
+                                                <img src="{{ asset('storage/'. $feedback->user->profile_photo) }}" alt="{{ $feedback->user->name }}" class="object-cover w-full h-full" />
+                                            @else
+                                                <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                                    <i class="ri-user-fill"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="ml-3 flex-1">
+                                        <h4 class="font-semibold text-gray-800 text-sm truncate">{{ $feedback->user->name }}</h4>
+                                        <div class="flex items-center">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <svg class="w-4 h-4 {{ $i <= $feedback->note ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                </svg>
+                                            @endfor
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="ml-3">
-                                <h4 class="font-semibold text-gray-800">{{ $feedback->user->name }}</h4>
-                                <div class="flex items-center">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <svg class="w-5 h-5 {{ $i <= $feedback->note ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                        </svg>
-                                    @endfor
-                                </div>
+                                <p class="text-gray-600 text-sm comment-text line-clamp-3">{{ $feedback->commentaire }}</p>
+                                <button class="read-more-btn hidden text-primary text-sm font-medium mt-2 hover:underline focus:outline-none" onclick="toggleReadMore(this)">Lire la suite</button>
+                                <p class="text-xs text-gray-400 mt-2">{{ $feedback->created_at->format('d/m/Y') }}</p>
                             </div>
                         </div>
-                        <p class="text-gray-600">{{ $feedback->commentaire }}</p>
-                        <p class="text-sm text-gray-400 mt-2">{{ $feedback->created_at->format('d/m/Y') }}</p>
                     </div>
-                </div>
-            @empty
-                <p class="text-center text-gray-600 col-span-full">Aucun avis publié pour le moment.</p>
-            @endforelse
+                @empty
+                    <div class="swiper-slide">
+                        <p class="text-center text-gray-600">Aucun avis publié pour le moment.</p>
+                    </div>
+                @endforelse
+            </div>
+            <!-- Pagination -->
+            <div class="swiper-pagination mt-4"></div>
         </div>
     </div>
 </section>
@@ -256,5 +272,43 @@
         });
     }
 
+
+    // pour le swiper
+    var swiper = new Swiper('.mySwiper', {
+        slidesPerView: 4,      
+        spaceBetween: 15,
+        autoplay: {
+            delay: 2500,     
+            disableOnInteraction: false, 
+        },
+        loop: true,           
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,  
+        },
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const comments = document.querySelectorAll('.comment-text');
+        comments.forEach(comment => {
+            const readMoreBtn = comment.nextElementSibling;
+            if (comment.scrollHeight > comment.clientHeight) {
+                readMoreBtn.classList.remove('hidden');
+            }
+        });
+    });
+
+    function toggleReadMore(btn) {
+        const comment = btn.previousElementSibling;
+        if (comment.classList.contains('line-clamp-3')) {
+            comment.classList.remove('line-clamp-3');
+            btn.textContent = 'Réduire';
+        } else {
+            comment.classList.add('line-clamp-3');
+            btn.textContent = 'Lire la suite';
+        }
+    }
+
 </script>
+
 @endsection
