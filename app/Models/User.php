@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_photo'
     ];
 
     /**
@@ -52,10 +53,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+    
     // Vérifie si l'utilisateur a un rôle spécifique
     public function hasRole($role)
     {
-        return $this->roles->contains('name', $role);
+        return $this->roles->where('name', $role)->isNotEmpty();   
     }
 
      // Vérifie si l'utilisateur a une permission spécifique
@@ -68,4 +75,14 @@ class User extends Authenticatable
          }
          return false;
      }
+
+
+     public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class, 'sportive_id');
+    }
 }

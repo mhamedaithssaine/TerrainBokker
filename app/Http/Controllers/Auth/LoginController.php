@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Validation\ValidationException;
 
 
@@ -37,12 +38,22 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
+        $user = $this->userRepository->getUserByEmail($request->email);
 
-        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('dashboard.index'));
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user);
+            $request->session()->put('user_id', $user->id); 
+            $request->session()->put('name', $user->name); 
+            $request->session()->put('photo', $user->profile_photo); 
+
+    
+            if ($user->hasRole('admin')) {
+                return redirect()->route('dashboard.index');
+            }
+            return redirect()->route('home');
         }
-
+    
         throw ValidationException::withMessages([
             'email' => [trans('auth.failed')],
         ]);
@@ -54,8 +65,8 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/login');
+        $request->session()->forget(['user_id','name','photo']);
+        $request->session()->regenerate();
+        return redirect('/');
     }
 }
