@@ -40,18 +40,20 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $terrain->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $terrain->categorie->name }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ number_format($terrain->prix, 2) }} DH</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    @if($terrain->tags->isNotEmpty())
-                                        @foreach($terrain->tags as $tag)
-                                            <span class="bg-gradient-to-r from-gray-100 to-gray-200 text-green-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300 mr-2">
-                                                {{ $tag->name }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"">
+                                    <div class="flex flex-wrap gap-2">
+                                        @if($terrain->tags->isNotEmpty())
+                                            @foreach($terrain->tags as $tag)
+                                                <span class="bg-gradient-to-r from-gray-100 to-gray-200 text-green-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
+                                                    {{ $tag->name }}
+                                                </span>
+                                            @endforeach
+                                        @else
+                                            <span class="bg-gray-100 text-gray-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
+                                                Aucun
                                             </span>
-                                        @endforeach
-                                    @else
-                                        <span class="bg-gray-100 text-gray-800 text-sm px-4 py-2 rounded-full shadow-sm hover:shadow-md transition-shadow duration-300">
-                                            Aucun
-                                        </span>
-                                    @endif
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if ($terrain->statut === 'disponible')
