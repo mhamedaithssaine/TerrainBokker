@@ -1,6 +1,6 @@
 <nav class="bg-white shadow-lg">
     <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-evenly h-16 items-center">
+        <div class="flex justify-between h-16 items-center">
             <!-- Logo et nom de l'application -->
             <div class="flex items-center">
                 <div class="flex-shrink-0 flex items-center">
@@ -10,7 +10,7 @@
             </div>
 
             <!-- Champ de recherche -->
-            <div class="flex-1 mx-14">
+            {{-- <div class="flex-1 mx-14">
                 <form action="" method="GET" class="w-full max-w-md">
                     <div class="relative">
                         <input type="text" name="query" placeholder="Rechercher..." 
@@ -18,17 +18,17 @@
                         <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
                 </form>
-            </div>
+            </div> --}}
 
-            <!-- Notifications et profil -->
+            <!--profil -->
             <div class="flex items-center space-x-6">
-                <!-- Bouton de notifications -->
+                {{-- <!-- Bouton de notifications -->
                 <div class="relative">
                     <button class="text-gray-600 hover:text-gray-900 focus:outline-none">
                         <i class="fas fa-bell text-xl"></i>
                         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
                     </button>
-                </div>
+                </div> --}}
 
                 <!-- Menu déroulant du profil -->
                 <div x-data="{ open: false }" class="relative">
