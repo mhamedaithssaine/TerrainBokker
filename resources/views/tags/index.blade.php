@@ -49,6 +49,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="mt-4 px-4">
+                    {{ $tags->links() }}
+                </div>
             @else
                 <p class="text-sm text-gray-600">Aucun sponsor trouvé.</p>
             @endif
