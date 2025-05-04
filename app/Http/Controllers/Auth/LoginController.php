@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,12 +33,9 @@ class LoginController extends Controller
     /**
      * Handle the authentication attempt
      */
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+       
         $user = $this->userRepository->getUserByEmail($request->email);
 
 
@@ -55,7 +53,7 @@ class LoginController extends Controller
         }
     
         throw ValidationException::withMessages([
-            'email' => [trans('auth.failed')],
+            'email' => ['Identifiants incorrects. Veuillez vérifier votre email ou mot de passe.'],
         ]);
     }
 
