@@ -142,7 +142,7 @@ class ReservationController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'eur',
+                    'currency' => 'mad',
                     'product_data' => [
                         'name' => 'Réservation de terrain #' . $reservation->id,
                     ],
