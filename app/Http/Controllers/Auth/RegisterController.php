@@ -6,6 +6,7 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Interfaces\UserRepositoryInterface;
 
@@ -30,13 +31,9 @@ class RegisterController extends Controller
     /**
      * Handle a registration request
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+       
 
         $sportiveRole = Role::where('name', 'sportive')->first();
 
