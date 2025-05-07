@@ -72,7 +72,7 @@ class ReservationController extends Controller
     $endHour = (int) $date_fin->format('H');
     $endMinute = (int) $date_fin->format('i');
 
-    if ($startHour < 8 || ($endHour < 22 || ($endHour === 22 && $endMinute > 0))) {
+    if ( $startHour >22 ||  $startHour < 8 || ($endHour > 22 || ($endHour === 22 && $endMinute > 0))) {
         return redirect()->route('reservations.create', $terrain_id)
                          ->with('error', 'Les reservations doivent etre entre 08:00 et 22:00.');
     }
