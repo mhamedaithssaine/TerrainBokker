@@ -26,7 +26,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 // Routes d'authentification (non protégées par auth)
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'login']);
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
